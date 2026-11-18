@@ -10,5 +10,7 @@ buyLabel: Buy on Amazon
 buyUrl: https://a.co/d/0iWWTBQS
 featured: false
 order: 21
+homeFeatured: true
+homeOrder: 5
 published: true
 ---

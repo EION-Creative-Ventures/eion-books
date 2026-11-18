@@ -21,6 +21,7 @@ showOnWork: false
 showOnStudio: true
 order: 3
 permission: true
+homeFeatured: false
 published: true
 featured: false
 studioFeatured: false

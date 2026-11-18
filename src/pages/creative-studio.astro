@@ -7,6 +7,7 @@ import ShowcaseFeature from '../components/ShowcaseFeature.astro';
 import ShowcaseCard from '../components/ShowcaseCard.astro';
 import Testimonials from '../components/Testimonials.astro';
 import { getSettings } from '../lib/settings';
+import { publishingHref } from '../lib/links';
 
 const entry = await getEntry('studio', 'creative-studio');
 if (!entry) throw new Error('Creative Studio page content is missing (src/content/pages/creative-studio.yaml).');
@@ -123,7 +124,7 @@ const spines = ['var(--marigold)', 'var(--teal)', 'var(--coral)'];
   <section class="pair">
     <div class="wrap pair__row">
       <p class="pair__text">{c.pairText}</p>
-      <a class="btn btn--dark" href="#">{c.pairButton} &rarr;</a>
+      <a class="btn btn--dark" href={publishingHref}>{c.pairButton} &rarr;</a>
     </div>
   </section>
 

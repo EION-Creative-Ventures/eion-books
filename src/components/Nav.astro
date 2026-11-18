@@ -1,9 +1,10 @@
 ---
 // Shared site navigation (Bold Spine). Pages not yet built point to "#".
 import { getSettings } from '../lib/settings';
+import { publishingHref } from '../lib/links';
 const { startHref } = await getSettings();
 const links = [
-  { label: 'Publishing Services', href: '#' },
+  { label: 'Publishing Services', href: publishingHref },
   { label: 'Creative Studio', href: '/creative-studio/' },
   { label: 'Our Books', href: '/our-books/' },
   { label: 'Authors', href: '/meet-our-authors/' },
@@ -14,7 +15,7 @@ const current = Astro.url.pathname;
 ---
 <header class="nav">
   <div class="wrap nav__row">
-    <a href="/our-books/" class="logo" aria-label="EION Books home">
+    <a href="/" class="logo" aria-label="EION Books home">
       <span class="logo__word">EION</span>
       <span class="logo__spine">BOOKS</span>
     </a>

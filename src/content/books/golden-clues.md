@@ -11,5 +11,6 @@ buyLabel: Buy the book
 buyUrl: https://peytonsjourney.com/shop/ols/products/the-secret-of-the-golden-clues-peytons-christmas-adventure
 featured: false
 order: 4
+homeFeatured: false
 published: true
 ---

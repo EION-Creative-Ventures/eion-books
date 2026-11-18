@@ -23,6 +23,7 @@ showOnStudio: true
 studioFeatured: true
 order: 2
 permission: true
+homeFeatured: false
 published: true
 featured: false
 ---

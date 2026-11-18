@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import BookCard from '../components/BookCard.astro';
 import { getBookAuthorLinks } from '../lib/authors';
+import { publishingHref } from '../lib/links';
 
 const all = (await getCollection('books', ({ data }) => data.published))
   .sort((a, b) => a.data.order - b.data.order);
@@ -64,7 +65,7 @@ const authorLinks = await getBookAuthorLinks();
         <p class="display band__title">We publish on the same platforms you'll use.</p>
         <p class="band__sub">Bring that experience to your own book.</p>
       </div>
-      <a href="#" class="btn btn--dark">Explore Publishing Services &rarr;</a>
+      <a href={publishingHref} class="btn btn--dark">Explore Publishing Services &rarr;</a>
     </div>
   </section>
 </Base>

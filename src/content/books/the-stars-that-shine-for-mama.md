@@ -9,5 +9,7 @@ buyLabel: Buy the book
 buyUrl: https://rochelle-mcmorris.square.site/product/the-stars-that-shine-for-mama/4?cp=true&sa=true&sbp=false&q=false
 featured: false
 order: 20
+homeFeatured: true
+homeOrder: 4
 published: true
 ---

@@ -2,6 +2,7 @@
 quote: I wholeheartedly endorse EION Creative Studio for anyone looking to create an impactful online presence!
 name: Juanita Woodson
 role: Brand strategy client
+homeFeatured: false
 order: 3
 published: true
 ---

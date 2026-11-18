@@ -10,5 +10,7 @@ buyLabel: Buy the book
 buyUrl: https://peytonsjourney.com/shop/ols/products/xn--marcus--big-reds-super-truck-adventure--f04y
 featured: false
 order: 5
+homeFeatured: true
+homeOrder: 3
 published: true
 ---

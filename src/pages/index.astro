@@ -1,4 +1,333 @@
 ---
-// Proof of concept: only the Our Books page exists, so the home URL forwards there.
-return Astro.redirect('/our-books/');
+import { getEntry, getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import BrowserFrame from '../components/BrowserFrame.astro';
+import { getSettings } from '../lib/settings';
+import { getBookAuthorLinks } from '../lib/authors';
+import { publishingHref } from '../lib/links';
+
+const entry = await getEntry('home', 'home');
+if (!entry) throw new Error('Home page content is missing (src/content/pages/home.yaml).');
+const h = entry.data;
+const { startHref } = await getSettings();
+
+// Curated shelf: books with "Show on the home page" on, in home display order.
+const shelf = (await getCollection('books', ({ data }) => data.published && data.homeFeatured))
+  .sort((a, b) => a.data.homeOrder - b.data.homeOrder);
+const heroBooks = shelf.slice(0, 3);
+const authorLinks = await getBookAuthorLinks();
+
+// Home picks from Portfolio (client projects need permission) and Testimonials.
+const work = (await getCollection('work', ({ data }) => data.published && data.homeFeatured
+  && (data.projectFor !== 'Client' || data.permission)))
+  .sort((a, b) => a.data.order - b.data.order).slice(0, 2);
+const quote = (await getCollection('testimonials', ({ data }) => data.published && data.homeFeatured))
+  .sort((a, b) => a.data.order - b.data.order)[0];
+const isPublishingLink = (href: string) => href === publishingHref;
 ---
+<Base title="EION Books | Professional Publishing for Independent Authors" description={h.heroIntro}>
+  <section class="hero">
+    <div class="wrap hero__row">
+      <div class="hero__copy">
+        <p class="hero__pill">{h.heroEyebrow}</p>
+        <h1 class="display caps hero__title">{h.heroTitle}{h.heroAccent && <><br /><span>{h.heroAccent}</span></>}</h1>
+        <p class="hero__intro">{h.heroIntro}</p>
+        <div class="hero__ctas">
+          <a class="btn btn--marigold" href={startHref}>{h.heroButton} &rarr;</a>
+          <a class="btn btn--ghost" href="#how">{h.heroSecondButton}</a>
+        </div>
+      </div>
+      {heroBooks.length > 0 && (
+        <div class="hero__shelf" aria-label="Books from the EION imprint">
+          <div class="hero__books">
+            {heroBooks[0] && <img class="hb hb--1 lift" src={heroBooks[0].data.cover} alt={heroBooks[0].data.coverAlt} />}
+            {heroBooks[1] && <img class="hb hb--2 lift" src={heroBooks[1].data.cover} alt={heroBooks[1].data.coverAlt} />}
+            <div class="hb--yours" aria-hidden="true">YOUR BOOK</div>
+            {heroBooks[2] && <img class="hb hb--3 lift" src={heroBooks[2].data.cover} alt={heroBooks[2].data.coverAlt} />}
+          </div>
+          <div class="hero__plank"></div>
+          {h.shelfCaption && <p class="hero__caption">{h.shelfCaption}</p>}
+        </div>
+      )}
+    </div>
+  </section>
+
+  <section class="own">
+    <div class="wrap own__grid">
+      {h.ownership.map((o) => (<div><h2 class="display">{o.title}</h2><p>{o.text}</p></div>))}
+    </div>
+  </section>
+
+  <section class="wrap services">
+    <p class="eyebrow services__eyebrow">{h.servicesEyebrow}</p>
+    <h2 class="display services__title">{h.servicesHeading}</h2>
+    <div class="services__grid">
+      {[
+        { c: h.publishingCard, cls: 'card--pub', href: publishingHref },
+        { c: h.studioCard, cls: 'card--studio', href: '/creative-studio/' },
+      ].map(({ c, cls, href }) => (
+        <article class:list={['card reveal', cls]}>
+          <p class="card__eyebrow">{c.eyebrow}</p>
+          <h3 class="display card__title">{c.title}</h3>
+          <p class="card__text">{c.text}</p>
+          {c.items.length > 0 && <ul>{c.items.map((i) => <li>{i}</li>)}</ul>}
+          <a class="card__link" href={href}>{c.linkText} &rarr;</a>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="founder">
+    <div class="wrap founder__row">
+      {h.founderPhoto && <div class="founder__photo reveal"><img src={h.founderPhoto} alt={h.founderPhotoAlt || h.founderName} loading="lazy" /></div>}
+      <div class="founder__copy">
+        <p class="eyebrow founder__eyebrow">{h.founderEyebrow}</p>
+        <blockquote class="founder__quote"><p>&ldquo;{h.founderQuote}&rdquo;</p></blockquote>
+        <p class="founder__name"><strong>{h.founderName}</strong>{h.founderRole && <span> · {h.founderRole}</span>}</p>
+        {h.founderLinkText && <p class="founder__links"><a href="/about/">{h.founderLinkText} &rarr;</a> <a href="/meet-our-authors/#paula-banks">Paula's author profile &rarr;</a></p>}
+      </div>
+    </div>
+  </section>
+
+  {shelf.length > 0 && (
+    <section class="books">
+      <div class="wrap">
+        <div class="books__head">
+          <div>
+            <p class="eyebrow">{h.booksEyebrow}</p>
+            <h2 class="display books__title">{h.booksHeading}</h2>
+          </div>
+          <p class="books__links"><a href="/our-books/">{h.booksLinkText} &rarr;</a>{h.authorsLinkText && <a href="/meet-our-authors/">{h.authorsLinkText} &rarr;</a>}</p>
+        </div>
+        <div class="books__grid">
+          {shelf.map((b) => {
+            const al = authorLinks.get(b.id);
+            return (
+              <article class="hbook reveal">
+                <a class="hbook__frame lift" href="/our-books/"><img src={b.data.cover} alt={b.data.coverAlt} loading="lazy" /></a>
+                <span class="badge badge--imprint">EION IMPRINT</span>
+                <h3>{b.data.title}</h3>
+                <p>{b.data.category} · {al ? <a href={al.href}>{b.data.author}</a> : b.data.author}</p>
+              </article>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  )}
+
+  {(work.length > 0 || quote) && (
+    <section class="wrap work">
+      <div class="books__head">
+        <div>
+          <p class="eyebrow work__eyebrow">{h.workEyebrow}</p>
+          <h2 class="display books__title">{h.workHeading}</h2>
+        </div>
+        <a class="work__all" href="/our-work/">{h.workLinkText} &rarr;</a>
+      </div>
+      <div class="work__grid">
+        {work.map((w) => (
+          <article class="wcard lift">
+            <div class="wcard__shot"><BrowserFrame src={w.data.image} alt={w.data.imageAlt} /></div>
+            <div class="wcard__body">
+              <span class="wcard__badge">{w.data.type === 'Creative Studio' ? 'CREATIVE STUDIO' : 'AUTHOR-PUBLISHED'}{w.data.category && ` · ${w.data.category.toUpperCase()}`}</span>
+              <h3>{w.data.title}</h3>
+              <p>{w.data.service} · for {w.data.client}</p>
+              {w.data.link && <a href={w.data.link}>{w.data.linkLabel} &rarr;</a>}
+            </div>
+          </article>
+        ))}
+        {quote && (
+          <figure class="wquote">
+            <span aria-hidden="true">&ldquo;</span>
+            <blockquote>{quote.data.quote}</blockquote>
+            <figcaption><strong>{quote.data.name}</strong>{quote.data.role && <span>{quote.data.role}</span>}</figcaption>
+          </figure>
+        )}
+      </div>
+    </section>
+  )}
+
+  <section class="how" id="how">
+    <div class="wrap">
+      <p class="eyebrow how__eyebrow">{h.howEyebrow}</p>
+      <h2 class="display how__title">{h.howHeading}</h2>
+      <ol class="how__steps">
+        {h.steps.map((s, i) => (
+          <li><span class:list={['display how__num', { 'how__num--solid': i === h.steps.length - 1 }]}>{i + 1}</span><h3>{s.title}</h3><p>{s.text}</p></li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="wrap who">
+    <p class="eyebrow who__eyebrow">{h.whoEyebrow}</p>
+    <p class="who__text">{h.whoText}</p>
+    <div class="who__chips">
+      {h.whoItems.map((i) => <span>{i}</span>)}
+      {h.whoButton && <a href={startHref}>{h.whoButton} &rarr;</a>}
+    </div>
+  </section>
+
+  <section class="sband">
+    <div class="wrap sband__row">
+      <div class="sband__copy">
+        <p class="eyebrow sband__eyebrow">{h.studioBandEyebrow}</p>
+        <h2 class="display caps sband__title">{h.studioBandTitle} {h.studioBandAccent && <span>{h.studioBandAccent}</span>} {h.studioBandTitleEnd}</h2>
+        <p class="sband__text">{h.studioBandText}</p>
+        <a class="btn btn--marigold" href="/creative-studio/">{h.studioBandButton} &rarr;</a>
+      </div>
+      <div class="sband__media reveal"><BrowserFrame src={h.studioBandImage} alt={h.studioBandImageAlt} dark /></div>
+    </div>
+  </section>
+
+  <section class="close">
+    <div class="wrap close__row">
+      <div>
+        <h2 class="display close__title">{h.closingHeading}</h2>
+        <p class="close__text">{h.closingText}</p>
+      </div>
+      <a class="btn btn--dark" href={startHref}>{h.closingButton} &rarr;</a>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .btn--ghost { border: 2px solid rgba(255,246,233,0.6); color: var(--cream); padding: 15px 26px; }
+  .btn--ghost:hover { background: var(--cream); color: var(--aubergine); }
+
+  .hero { background: var(--aubergine); color: var(--cream); overflow: hidden; }
+  .hero__row { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 48px; align-items: end; padding-top: 88px; }
+  .hero__copy { padding-bottom: 96px; }
+  .hero__pill { display: inline-block; margin: 0 0 30px; border: 1.5px solid var(--marigold); color: var(--marigold); padding: 7px 14px; border-radius: 999px; font-weight: 700; font-size: 13px; letter-spacing: 0.14em; }
+  .hero__title { margin: 0; font-size: clamp(60px, 7.6vw, 120px); line-height: 0.86; letter-spacing: -0.015em; }
+  .hero__title span { color: var(--marigold); }
+  .hero__intro { margin: 34px 0 0; max-width: 520px; font-size: 20px; line-height: 1.55; color: var(--on-dark); }
+  .hero__ctas { margin-top: 38px; display: flex; flex-wrap: wrap; gap: 14px; }
+  .hero__books { display: flex; align-items: flex-end; height: 420px; }
+  .hb { position: relative; height: auto; border-radius: 2px 6px 6px 2px; box-shadow: 0 30px 50px -20px rgba(0,0,0,0.6); }
+  .hb--1 { width: 31%; z-index: 2; }
+  .hb--2 { width: 36%; margin-left: -3%; z-index: 1; }
+  .hb--3 { width: 29%; margin-left: 2.5%; transform: rotate(-7deg); transform-origin: bottom left; }
+  .hb--3.lift:hover { transform: rotate(-7deg) translateY(-6px); }
+  .hb--yours { writing-mode: vertical-rl; transform: rotate(180deg); flex: 0 0 48px; height: 290px; margin-left: 2%; border: 2px dashed var(--marigold); display: flex; align-items: center; justify-content: center; font-family: var(--display); font-weight: 800; font-stretch: 75%; font-size: 19px; letter-spacing: 0.06em; color: var(--marigold); }
+  .hero__plank { height: 14px; background: var(--marigold); }
+  .hero__caption { margin: 14px 0 40px; font-size: 12px; font-weight: 700; letter-spacing: 0.16em; color: var(--on-dark-quiet); }
+
+  .own { background: var(--marigold); }
+  .own__grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 48px; padding-block: 64px; }
+  .own h2 { margin: 0 0 10px; font-size: 44px; line-height: 0.95; }
+  .own p { margin: 0; font-weight: 500; }
+
+  .services { padding-block: 130px 110px; }
+  .services__eyebrow { color: var(--coral); }
+  .services__title { margin: 0 0 56px; max-width: 900px; font-size: clamp(44px, 5vw, 72px); line-height: 0.95; }
+  .services__grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 28px; }
+  .card { padding: 52px; border-radius: 12px; display: flex; flex-direction: column; gap: 20px; }
+  .card--pub { background: var(--coral); color: var(--aubergine); }
+  .card--studio { background: var(--teal); color: var(--cream); }
+  .card__eyebrow { margin: 0; font-weight: 700; font-size: 13px; letter-spacing: 0.16em; }
+  .card--studio .card__eyebrow, .card--studio .card__link { color: var(--marigold); }
+  .card__title { margin: 0; font-size: clamp(40px, 4vw, 52px); line-height: 0.92; }
+  .card__text { margin: 0; font-weight: 500; max-width: 460px; }
+  .card ul { margin: 8px 0 0; padding: 0; list-style: none; border-top: 1.5px solid currentColor; font-weight: 600; }
+  .card li { padding: 13px 0; border-bottom: 1.5px solid currentColor; }
+  .card--pub ul, .card--pub li { border-color: rgba(42,20,51,0.25); }
+  .card--studio ul, .card--studio li { border-color: rgba(255,246,233,0.3); }
+  .card__link { margin-top: auto; padding-top: 10px; font-weight: 700; color: inherit; }
+
+  .founder { background: var(--paper); border-block: 1px solid var(--line); }
+  .founder__row { display: grid; grid-template-columns: minmax(0, 420px) minmax(0, 1fr); gap: 72px; align-items: center; padding-block: 110px; }
+  .founder__photo { position: relative; }
+  .founder__photo::before { content: ""; position: absolute; inset: 16px -16px -16px 16px; background: var(--marigold); border-radius: 14px; }
+  .founder__photo img { position: relative; width: 100%; aspect-ratio: 4 / 5; object-fit: cover; object-position: 50% 30%; border-radius: 14px; }
+  .founder__eyebrow { color: var(--teal); }
+  .founder__quote { margin: 0; }
+  .founder__quote p { margin: 0; font-family: var(--display); font-weight: 700; font-size: clamp(26px, 2.6vw, 36px); line-height: 1.22; }
+  .founder__name { margin: 28px 0 0; font-size: 17px; }
+  .founder__name span { color: var(--mauve); }
+  .founder__links { margin: 18px 0 0; display: flex; flex-wrap: wrap; gap: 24px; font-weight: 700; }
+
+  .books { background: var(--sand); padding-block: 120px; }
+  .books__head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 24px; margin-bottom: 56px; }
+  .books__title { margin: 0; max-width: 760px; font-size: clamp(44px, 5vw, 72px); line-height: 0.95; }
+  .books__links { margin: 0; display: flex; flex-wrap: wrap; gap: 24px; font-weight: 700; }
+  .books__grid { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 24px; }
+  @media (max-width: 1100px) { .books__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  @media (max-width: 560px) { .books__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; } }
+  .hbook__frame { aspect-ratio: 1; background: var(--cover-bg); display: flex; align-items: center; justify-content: center; border-radius: 8px; }
+  .hbook__frame img { max-width: 82%; max-height: 86%; border-radius: 2px 5px 5px 2px; box-shadow: 0 20px 34px -16px rgba(42,20,51,0.5); }
+  .hbook .badge { margin-top: 18px; }
+  .hbook h3 { margin: 10px 0 2px; font-size: 17px; line-height: 1.3; }
+  .hbook p { margin: 0; font-size: 15px; color: var(--mauve); }
+  .hbook p a { color: inherit; font-weight: 600; }
+
+  .work { padding-block: 130px 120px; }
+  .work__eyebrow { color: var(--coral); }
+  .work__all { font-weight: 700; }
+  .work__grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 32px; }
+  .wcard { background: var(--paper); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+  .wcard__shot { background: #E6F2F1; padding: 22px 22px 0; }
+  .wcard__shot :global(.bf) { border-radius: 8px 8px 0 0; border-bottom: 0; box-shadow: 0 18px 30px -18px rgba(42,20,51,0.45); }
+  .wcard__body { padding: 22px 26px 26px; }
+  .wcard__badge { display: inline-block; border: 1.5px solid var(--teal); color: #0F5F5D; padding: 2px 9px; border-radius: 4px; font-size: 11px; font-weight: 700; letter-spacing: 0.14em; }
+  .wcard h3 { margin: 12px 0 2px; font-size: 21px; }
+  .wcard p { margin: 0 0 12px; font-size: 15px; color: var(--mauve); }
+  .wcard a { font-weight: 700; font-size: 15px; }
+  .wquote { margin: 0; background: var(--aubergine); color: var(--cream); border-radius: 12px; padding: 40px; display: flex; flex-direction: column; justify-content: space-between; gap: 24px; }
+  .wquote > span { font-family: var(--display); font-weight: 800; font-size: 72px; line-height: 0.6; color: var(--marigold); }
+  .wquote blockquote { margin: 0; font-family: var(--display); font-weight: 700; font-size: 25px; line-height: 1.22; }
+  .wquote figcaption strong { display: block; }
+  .wquote figcaption span { font-size: 15px; color: var(--on-dark-quiet); }
+
+  .how { background: var(--aubergine); color: var(--cream); padding-block: 120px; scroll-margin-top: 0; }
+  .how__eyebrow { color: var(--marigold); }
+  .how__title { margin: 0 0 64px; font-size: clamp(44px, 5vw, 72px); line-height: 0.95; }
+  .how__steps { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 40px; }
+  .how__num { display: block; font-size: 112px; line-height: 0.8; color: transparent; -webkit-text-stroke: 2px var(--marigold); }
+  .how__num--solid { color: var(--marigold); }
+  .how__steps h3 { margin: 22px 0 8px; font-size: 23px; }
+  .how__steps p { margin: 0; color: var(--on-dark); }
+
+  .who { padding-block: 110px 100px; text-align: center; }
+  .who__eyebrow { justify-content: center; }
+  .who__eyebrow::before { display: none; }
+  .who__text { margin: 0 auto 28px; max-width: 720px; font-size: 21px; line-height: 1.55; }
+  .who__chips { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
+  .who__chips span { border: 1.5px solid var(--aubergine); padding: 10px 20px; border-radius: 999px; font-weight: 600; }
+  .who__chips a { padding: 10px 20px; border-radius: 999px; font-weight: 700; background: var(--marigold); text-decoration: none; }
+
+  .sband { background: var(--teal); color: var(--cream); }
+  .sband__row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: 64px; align-items: center; padding-block: 120px; }
+  .sband__eyebrow { color: var(--marigold); }
+  .sband__title { margin: 0; font-size: clamp(52px, 6.4vw, 96px); line-height: 0.88; }
+  .sband__title span { color: var(--marigold); }
+  .sband__text { margin: 28px 0 34px; max-width: 460px; font-size: 19px; color: var(--cream); }
+
+  .close { background: var(--marigold); }
+  .close__row { display: flex; flex-wrap: wrap; gap: 32px; align-items: center; justify-content: space-between; padding-block: 96px; }
+  .close__title { margin: 0; font-size: clamp(44px, 5vw, 68px); line-height: 0.95; }
+  .close__text { margin: 14px 0 0; max-width: 560px; font-weight: 500; }
+
+  @media (max-width: 960px) {
+    .hero__row, .founder__row, .sband__row { grid-template-columns: 1fr; }
+    .hero__row { padding-top: 56px; gap: 8px; }
+    .hero__copy { padding-bottom: 40px; }
+    .hero__books { height: auto; padding-top: 32px; }
+    .hb--yours { height: 200px; flex-basis: 40px; font-size: 16px; }
+    .founder__row { gap: 48px; padding-block: 72px; }
+    .founder__photo { max-width: 340px; }
+  }
+  @media (max-width: 640px) {
+    .services, .work, .books, .how, .sband__row, .who { padding-block: 64px; }
+    .card { padding: 30px 24px; }
+    .own h2 { font-size: 36px; }
+    .hero__books { height: auto; padding-top: 24px; }
+    .hero__pill { font-size: 11px; letter-spacing: 0.1em; padding: 6px 12px; }
+    .hb--3 { width: 26%; }
+    .hb--yours { height: 160px; flex-basis: 34px; font-size: 14px; }
+    .how__num { font-size: 84px; }
+    .wquote { padding: 30px; }
+    .wquote blockquote { font-size: 21px; }
+  }
+</style>

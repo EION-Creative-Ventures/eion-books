@@ -21,5 +21,7 @@ buyLabel: Buy the book
 buyUrl: https://payhip.com/b/Xcd58
 featured: true
 order: 1
+homeFeatured: true
+homeOrder: 1
 published: true
 ---

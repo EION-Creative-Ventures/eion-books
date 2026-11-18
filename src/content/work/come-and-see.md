@@ -20,6 +20,7 @@ showOnWork: false
 showOnStudio: true
 order: 4
 permission: true
+homeFeatured: false
 published: true
 featured: false
 studioFeatured: false

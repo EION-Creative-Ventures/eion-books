@@ -14,6 +14,7 @@ linkLabel: Visit the site
 featured: false
 order: 5
 permission: true
+homeFeatured: false
 published: true
 showOnWork: true
 showOnStudio: false

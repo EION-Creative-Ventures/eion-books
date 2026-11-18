@@ -83,6 +83,8 @@ collections:
         default: false
         hint: Turn this on for one book only.
       - { label: Display order, name: order, widget: number, value_type: int, default: 100, hint: "Lower numbers appear first." }
+      - { label: Show on the home page shelf, name: homeFeatured, widget: boolean, required: false, default: false, hint: "The first three also appear in the home page hero." }
+      - { label: Home page shelf order, name: homeOrder, widget: number, value_type: int, default: 100, hint: "Lower numbers appear first on the home page." }
       - { label: Show on website, name: published, widget: boolean, required: false, default: true, hint: "Turn off to hide this book without deleting it." }
 
 
@@ -240,6 +242,7 @@ collections:
       - { label: Quote by, name: quoteBy, widget: string, required: false, hint: "Example: Tiffany Sayles, author & EION client" }
       - { label: Show on the Our Work page, name: showOnWork, widget: boolean, required: false, default: true }
       - { label: Show in the Creative Studio website portfolio, name: showOnStudio, widget: boolean, required: false, default: false }
+      - { label: Show on the home page, name: homeFeatured, widget: boolean, required: false, default: false, hint: "Up to two projects appear on the home page." }
       - { label: Feature large on the Creative Studio page, name: studioFeatured, widget: boolean, required: false, default: false, hint: "Best for one or two projects." }
       - { label: Feature at the top of the Our Work page, name: featured, widget: boolean, required: false, default: false, hint: Turn this on for one project only. }
       - { label: Display order, name: order, widget: number, value_type: int, default: 100, hint: "Lower numbers appear first." }
@@ -271,6 +274,7 @@ collections:
       - { label: Role, name: role, widget: string, required: false, hint: "Example: Author & EION client" }
       - { label: Photo, name: photo, widget: image, required: false, choose_url: false, hint: "Optional square photo. Without one, their initials appear." }
       - { label: Photo description, name: photoAlt, widget: string, required: false }
+      - { label: Show on the home page, name: homeFeatured, widget: boolean, required: false, default: false, hint: "One testimonial appears on the home page." }
       - { label: Display order, name: order, widget: number, value_type: int, default: 100, hint: "Lower numbers appear first." }
       - { label: Show on website, name: published, widget: boolean, required: false, default: true }
 
@@ -280,6 +284,78 @@ collections:
     media_folder: /public/uploads/about
     public_folder: /uploads/about
     files:
+      - name: home
+        label: Home page
+        file: src/content/pages/home.yaml
+        format: yml
+        fields:
+          - { label: "Hero: small heading", name: heroEyebrow, widget: string }
+          - { label: "Hero: headline (first line)", name: heroTitle, widget: string }
+          - { label: "Hero: headline (gold line)", name: heroAccent, widget: string, required: false }
+          - { label: "Hero: intro", name: heroIntro, widget: text }
+          - { label: "Hero: main button", name: heroButton, widget: string }
+          - { label: "Hero: second button", name: heroSecondButton, widget: string }
+          - { label: "Hero: shelf caption", name: shelfCaption, widget: string, required: false, hint: "The books in the hero are the first three on the home page shelf (set in Books)." }
+          - label: "Your book stays yours"
+            name: ownership
+            widget: list
+            summary: "{{fields.title}}"
+            fields:
+              - { label: Title, name: title, widget: string }
+              - { label: Text, name: text, widget: text }
+          - { label: "Services: small heading", name: servicesEyebrow, widget: string }
+          - { label: "Services: heading", name: servicesHeading, widget: string }
+          - label: Publishing Services card
+            name: publishingCard
+            widget: object
+            fields: &cardfields
+              - { label: Small heading, name: eyebrow, widget: string }
+              - { label: Title, name: title, widget: string }
+              - { label: Text, name: text, widget: text }
+              - { label: Bullet points, name: items, widget: list, field: { label: Point, name: item, widget: string } }
+              - { label: Link text, name: linkText, widget: string }
+          - label: Creative Studio card
+            name: studioCard
+            widget: object
+            fields: *cardfields
+          - { label: "Founder: small heading", name: founderEyebrow, widget: string }
+          - { label: "Founder: quote", name: founderQuote, widget: text }
+          - { label: "Founder: name", name: founderName, widget: string }
+          - { label: "Founder: role", name: founderRole, widget: string, required: false }
+          - { label: "Founder: link text", name: founderLinkText, widget: string, required: false }
+          - { label: "Founder: photo", name: founderPhoto, widget: image, required: false, choose_url: false }
+          - { label: "Founder: photo description", name: founderPhotoAlt, widget: string, required: false }
+          - { label: "Books shelf: small heading", name: booksEyebrow, widget: string }
+          - { label: "Books shelf: heading", name: booksHeading, widget: string, hint: "Choose which books appear in Books, with 'Show on the home page shelf'." }
+          - { label: "Books shelf: Our Books link text", name: booksLinkText, widget: string }
+          - { label: "Books shelf: authors link text", name: authorsLinkText, widget: string, required: false }
+          - { label: "Our work: small heading", name: workEyebrow, widget: string }
+          - { label: "Our work: heading", name: workHeading, widget: string, hint: "Choose projects in Portfolio and the quote in Testimonials, with 'Show on the home page'." }
+          - { label: "Our work: link text", name: workLinkText, widget: string }
+          - { label: "How it works: small heading", name: howEyebrow, widget: string }
+          - { label: "How it works: heading", name: howHeading, widget: string }
+          - label: "How it works: steps"
+            name: steps
+            widget: list
+            summary: "{{fields.title}}"
+            fields:
+              - { label: Title, name: title, widget: string }
+              - { label: Text, name: text, widget: text }
+          - { label: "Who we work with: small heading", name: whoEyebrow, widget: string }
+          - { label: "Who we work with: text", name: whoText, widget: text }
+          - { label: "Who we work with: examples", name: whoItems, widget: list, field: { label: Example, name: item, widget: string } }
+          - { label: "Who we work with: button", name: whoButton, widget: string, required: false }
+          - { label: "Studio band: small heading", name: studioBandEyebrow, widget: string }
+          - { label: "Studio band: headline start", name: studioBandTitle, widget: string }
+          - { label: "Studio band: headline gold word", name: studioBandAccent, widget: string, required: false }
+          - { label: "Studio band: headline end", name: studioBandTitleEnd, widget: string, required: false }
+          - { label: "Studio band: text", name: studioBandText, widget: text }
+          - { label: "Studio band: button", name: studioBandButton, widget: string }
+          - { label: "Studio band: screenshot", name: studioBandImage, widget: image, choose_url: false }
+          - { label: "Studio band: screenshot description", name: studioBandImageAlt, widget: string }
+          - { label: "Closing: heading", name: closingHeading, widget: string }
+          - { label: "Closing: text", name: closingText, widget: text }
+          - { label: "Closing: button", name: closingButton, widget: string }
       - name: about
         label: About page
         file: src/content/pages/about.md

@@ -12,5 +12,7 @@ buyLabel: Buy the book
 buyUrl: https://peytonsjourney.com/shop/ols/products/dream-big-peytons-hip-hop-adventure
 featured: false
 order: 2
+homeFeatured: true
+homeOrder: 2
 published: true
 ---

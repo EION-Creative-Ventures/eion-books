@@ -18,4 +18,5 @@ published: true
 showOnWork: true
 showOnStudio: false
 studioFeatured: false
+homeFeatured: true
 ---

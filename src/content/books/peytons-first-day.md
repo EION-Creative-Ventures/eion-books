@@ -11,5 +11,6 @@ buyLabel: Buy the book
 buyUrl: https://peytonsjourney.com/shop/ols/products/peytons-first-day-at-a-new-school
 featured: false
 order: 3
+homeFeatured: false
 published: true
 ---
