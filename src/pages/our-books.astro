@@ -2,12 +2,14 @@
 import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import BookCard from '../components/BookCard.astro';
+import { getBookAuthorLinks } from '../lib/authors';
 
 const all = (await getCollection('books', ({ data }) => data.published))
   .sort((a, b) => a.data.order - b.data.order);
 const featured = all.find((b) => b.data.featured);
 const rest = all.filter((b) => b !== featured);
 const categories = [...new Set(rest.map((b) => b.data.category))];
+const authorLinks = await getBookAuthorLinks();
 ---
 <Base title="Our Books | EION Books" description="Books published under the EION Books imprint.">
   <section class="hero">
@@ -17,7 +19,7 @@ const categories = [...new Set(rest.map((b) => b.data.category))];
         <h1 class="display caps hero__title">Published by <span>EION Books.</span></h1>
       </div>
       <div class="hero__note">
-        <p>These titles carry the EION Books imprint. Looking for books authors published with our help? <a href="/our-work/">See Our Work</a>.</p>
+        <p>These titles carry the EION Books imprint. <a href="/meet-our-authors/">Meet the authors</a> behind them, or see <a href="/our-work/">Our Work</a> for projects we've supported.</p>
       </div>
     </div>
   </section>
@@ -30,7 +32,7 @@ const categories = [...new Set(rest.map((b) => b.data.category))];
           <span class="badge badge--imprint">EION IMPRINT · {featured.data.category.toUpperCase()}</span>
           <h2 class="display feature__title">{featured.data.title}</h2>
           {featured.data.subtitle && <p class="feature__subtitle">{featured.data.subtitle}</p>}
-          <p class="feature__meta">by {featured.data.author}</p>
+          <p class="feature__meta">by {authorLinks.get(featured.id) ? <a href={authorLinks.get(featured.id)!.href}>{featured.data.author}</a> : featured.data.author}</p>
           <p class="feature__meta">{featured.data.description}</p>
           {featured.data.buyUrl && <a class="btn btn--dark" href={featured.data.buyUrl}>{featured.data.buyLabel} &rarr;</a>}
         </div>
@@ -41,8 +43,8 @@ const categories = [...new Set(rest.map((b) => b.data.category))];
   <section class="wrap shelf">
     <div class="shelf__head">
       <div>
-        <p class="shelf__kicker">THE PEYTON'S JOURNEY SERIES &amp; MORE PICTURE BOOKS</p>
-        <h2 class="display shelf__title">Picture books</h2>
+        <p class="shelf__kicker">EVERY TITLE FROM THE EION BOOKS IMPRINT</p>
+        <h2 class="display shelf__title">The shelf</h2>
       </div>
       <div class="filters" role="group" aria-label="Filter books">
         <button type="button" class="filter is-active" data-filter="all" aria-pressed="true">All</button>
@@ -52,7 +54,7 @@ const categories = [...new Set(rest.map((b) => b.data.category))];
       </div>
     </div>
     <div class="grid">
-      {rest.map((book) => <BookCard book={book} />)}
+      {rest.map((book) => <BookCard book={book} authorLink={authorLinks.get(book.id)} />)}
     </div>
   </section>
 

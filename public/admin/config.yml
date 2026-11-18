@@ -42,6 +42,8 @@ collections:
     view_filters:
       - { label: Picture books, field: category, pattern: Picture book }
       - { label: For parents, field: category, pattern: For parents }
+      - { label: "Children's books", field: category, pattern: "Children's book" }
+      - { label: Anthologies, field: category, pattern: Anthology }
     fields:
       - { label: Title, name: title, widget: string }
       - { label: Subtitle, name: subtitle, widget: string, required: false, hint: "Optional. Shown under the title." }
@@ -50,7 +52,7 @@ collections:
       - label: Category
         name: category
         widget: select
-        options: [Picture book, For parents]
+        options: [Picture book, For parents, "Children's book", Anthology]
         hint: Controls the filter buttons on the Our Books page.
       - { label: Series, name: series, widget: string, required: false, hint: "Optional, for example: Peyton's Journey" }
       - label: Cover image
@@ -65,6 +67,7 @@ collections:
       - label: Book description
         name: description
         widget: text
+        required: false
         hint: Two or three sentences for the featured book, one sentence for the others.
       - { label: Buy button text, name: buyLabel, widget: string, default: Buy the book }
       - label: Buy link
@@ -81,6 +84,86 @@ collections:
         hint: Turn this on for one book only.
       - { label: Display order, name: order, widget: number, value_type: int, default: 100, hint: "Lower numbers appear first." }
       - { label: Show on website, name: published, widget: boolean, required: false, default: true, hint: "Turn off to hide this book without deleting it." }
+
+
+  - name: authors
+    label: Published Authors
+    label_singular: Author
+    description: Authors published under the EION Books imprint. They appear in Our Published Authors on the Meet Our Authors page. Link each author to their books so the Books and Authors pages stay connected.
+    folder: src/content/authors
+    media_folder: /public/uploads/authors
+    public_folder: /uploads/authors
+    create: true
+    slug: "{{name}}"
+    identifier_field: name
+    extension: md
+    format: frontmatter
+    summary: "{{name}}"
+    sortable_fields: [order, name]
+    fields:
+      - { label: Name, name: name, widget: string }
+      - { label: Photo, name: photo, widget: image, required: false, choose_url: false, hint: "A portrait photo, at least 600px wide, JPG or PNG under 2 MB. Only upload photos you have permission to publish." }
+      - { label: Photo description (for screen readers), name: photoAlt, widget: string, required: false }
+      - { label: Author of, name: authorOf, widget: string, required: false, hint: "Example: Author of The Stars That Shine for Mama, published by EION Books." }
+      - { label: Biography, name: bio, widget: text, required: false }
+      - label: Books by this author
+        name: books
+        widget: relation
+        collection: books
+        search_fields: [title]
+        value_field: "{{slug}}"
+        display_fields: [title]
+        multiple: true
+        required: false
+        hint: Choose from the Books section. Each book then links back to this profile.
+      - label: Website
+        name: websiteUrl
+        widget: string
+        required: false
+        pattern: ['^(https?://.*)?$', 'Must start with https://']
+      - label: Instagram
+        name: instagramUrl
+        widget: string
+        required: false
+        pattern: ['^(https?://.*)?$', 'Must start with https://']
+      - label: Facebook
+        name: facebookUrl
+        widget: string
+        required: false
+        pattern: ['^(https?://.*)?$', 'Must start with https://']
+      - { label: Other link text, name: otherLinkLabel, widget: string, required: false, hint: "Example: Author newsletter" }
+      - label: Other link
+        name: otherLinkUrl
+        widget: string
+        required: false
+        pattern: ['^(https?://.*)?$', 'Must start with https://']
+      - { label: Display order, name: order, widget: number, value_type: int, default: 100, hint: "Lower numbers appear first." }
+      - { label: Show on website, name: published, widget: boolean, required: false, default: true, hint: "Turn off to hide this profile without deleting it." }
+
+  - name: young-authors
+    label: Young Authors
+    label_singular: Young author
+    description: Young authors featured in an anthology. Names only. Photos are intentionally not available here, so children's photos are never saved to the public code repository. Add only names approved for public display.
+    folder: src/content/young-authors
+    create: true
+    slug: "{{name}}"
+    identifier_field: name
+    extension: md
+    format: frontmatter
+    summary: "{{name}}"
+    sortable_fields: [order, name]
+    fields:
+      - { label: Name (as approved for public display), name: name, widget: string, hint: "Use the name exactly as approved, for example a first name and last initial." }
+      - label: Anthology
+        name: anthology
+        widget: relation
+        collection: books
+        search_fields: [title, subtitle]
+        value_field: "{{slug}}"
+        display_fields: ["{{title}} {{subtitle}}"]
+        hint: "Choose the anthology from the Books section. For a new volume, add the book first (category: Anthology)."
+      - { label: Display order, name: order, widget: number, value_type: int, default: 100, hint: "Lower numbers appear first." }
+      - { label: Show on website, name: published, widget: boolean, required: false, default: true }
 
   - name: work
     label: Portfolio

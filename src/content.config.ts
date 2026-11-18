@@ -11,11 +11,11 @@ const books = defineCollection({
     subtitle: z.string().optional(),
     author: z.string(),
     illustrator: z.string().optional(),
-    category: z.enum(['Picture book', 'For parents']),
+    category: z.enum(['Picture book', 'For parents', "Children's book", 'Anthology']),
     series: z.string().optional(),
     cover: z.string(),
     coverAlt: z.string(),
-    description: z.string(),
+    description: z.string().optional().default(''),
     buyLabel: z.string().default('Buy the book'),
     buyUrl: z.string().optional(),
     featured: z.boolean().default(false),
@@ -153,4 +153,35 @@ const studio = defineCollection({
   }),
 });
 
-export const collections = { books, work, testimonials, pages, settings, studio };
+// Published authors (Meet Our Authors page). Books are linked by their file name (slug).
+const authors = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/authors' }),
+  schema: z.object({
+    name: z.string(),
+    photo: opt,
+    photoAlt: opt,
+    authorOf: opt,
+    bio: opt,
+    books: z.array(z.string()).default([]),
+    websiteUrl: opt,
+    instagramUrl: opt,
+    facebookUrl: opt,
+    otherLinkLabel: opt,
+    otherLinkUrl: opt,
+    order: z.number().default(100),
+    published: z.boolean().default(true),
+  }),
+});
+
+// Young authors: names only, by design. There is deliberately no photo field.
+const youngAuthors = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/young-authors' }),
+  schema: z.object({
+    name: z.string(),
+    anthology: z.string(),
+    order: z.number().default(100),
+    published: z.boolean().default(true),
+  }),
+});
+
+export const collections = { books, work, testimonials, pages, settings, studio, authors, youngAuthors };

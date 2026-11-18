@@ -1,9 +1,9 @@
 ---
 import type { CollectionEntry } from 'astro:content';
-interface Props { book: CollectionEntry<'books'>; compact?: boolean }
-const { book, compact = false } = Astro.props;
+interface Props { book: CollectionEntry<'books'>; compact?: boolean; authorLink?: { name: string; href: string } }
+const { book, compact = false, authorLink } = Astro.props;
 const b = book.data;
-const byline = ['by ' + b.author, b.illustrator ? 'illustrated by ' + b.illustrator : null].filter(Boolean).join(' · ');
+const illus = b.illustrator ? ' · illustrated by ' + b.illustrator : '';
 ---
 <article class="book reveal" data-category={b.category}>
   <div class="book__frame lift">
@@ -12,8 +12,8 @@ const byline = ['by ' + b.author, b.illustrator ? 'illustrated by ' + b.illustra
   <span class="badge badge--imprint">EION IMPRINT</span>
   <h3 class="book__title">{b.title}</h3>
   {b.subtitle && <p class="book__meta">{b.subtitle}</p>}
-  {!compact && <p class="book__meta">{b.description}</p>}
-  <p class="book__meta">{byline}</p>
+  {!compact && b.description && <p class="book__meta">{b.description}</p>}
+  <p class="book__meta">by {authorLink ? <a class="book__author" href={authorLink.href}>{b.author}</a> : b.author}{illus}</p>
   {b.buyUrl && <a class="book__buy" href={b.buyUrl}>{b.buyLabel} &rarr;</a>}
 </article>
 
@@ -23,5 +23,6 @@ const byline = ['by ' + b.author, b.illustrator ? 'illustrated by ' + b.illustra
   .badge { margin-top: 18px; }
   .book__title { margin: 10px 0 4px; font-size: 21px; line-height: 1.25; }
   .book__meta { margin: 0 0 6px; font-size: 15px; color: var(--mauve); }
+  .book__author { color: inherit; font-weight: 600; }
   .book__buy { display: inline-block; margin-top: 10px; font-weight: 700; }
 </style>

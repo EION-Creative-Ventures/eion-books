@@ -1,0 +1,188 @@
+---
+import { getCollection, getEntry } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import { getSettings } from '../lib/settings';
+
+const authors = (await getCollection('authors', ({ data }) => data.published)).sort((a, b) => a.data.order - b.data.order);
+const books = await getCollection('books');
+const bookById = new Map(books.map((b) => [b.id, b]));
+
+// Young authors, grouped by anthology (so future volumes get their own shelf).
+const young = (await getCollection('youngAuthors', ({ data }) => data.published)).sort((a, b) => a.data.order - b.data.order);
+const volumes = [...new Set(young.map((y) => y.data.anthology))].map((id) => ({
+  book: bookById.get(id),
+  id,
+  names: young.filter((y) => y.data.anthology === id).map((y) => y.data.name),
+}));
+const { startHref } = await getSettings();
+const spineColors = ['var(--aubergine)', 'var(--teal)', 'var(--coral)', 'var(--paper)', 'var(--aubergine-deep)', 'var(--teal)', 'var(--coral)', 'var(--aubergine)', 'var(--paper)'];
+const links = (a: (typeof authors)[number]['data']) => [
+  { label: 'Website', href: a.websiteUrl },
+  { label: 'Instagram', href: a.instagramUrl },
+  { label: 'Facebook', href: a.facebookUrl },
+  { label: a.otherLinkLabel || 'More', href: a.otherLinkUrl },
+].filter((l) => l.href);
+---
+<Base title="Meet Our Authors | EION Books" description="The authors published under the EION Books imprint, including the young authors of I Got a Story to Tell.">
+  <section class="hero">
+    <div class="wrap hero__row">
+      <div>
+        <p class="eyebrow hero__eyebrow">MEET OUR AUTHORS</p>
+        <h1 class="display caps hero__title">The people behind <span>our books.</span></h1>
+      </div>
+      <div class="hero__note">
+        <p>Every author here is published under the EION Books imprint, from first-time picture book authors to the young writers of <em>I Got a Story to Tell</em>.</p>
+        <p class="hero__jump"><a href="#published">Published authors</a> · <a href="#young-authors">Young authors</a></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap published" id="published">
+    <p class="eyebrow published__eyebrow">OUR PUBLISHED AUTHORS</p>
+    {authors.map((a, i) => {
+      const d = a.data;
+      const theirBooks = d.books.map((id) => bookById.get(id)).filter(Boolean);
+      return (
+        <article class:list={['author reveal', { 'author--flip': i % 2 === 1 }]} id={a.id}>
+          <div class="author__photo">
+            {d.photo
+              ? <img src={d.photo} alt={d.photoAlt || d.name} loading={i === 0 ? 'eager' : 'lazy'} />
+              : <div class="author__initials" aria-hidden="true">{d.name.split(/\s+/).map((w) => w[0]).slice(0, 2).join('')}</div>}
+          </div>
+          <div class="author__copy">
+            <h2 class="display author__name">{d.name}</h2>
+            {d.authorOf && <p class="author__of">{d.authorOf}</p>}
+            {d.bio && <p class="author__bio">{d.bio}</p>}
+            {a.id === 'paula-banks' && <p class="author__about"><a href="/about/">About EION Books and its founder &rarr;</a></p>}
+            {links(d).length > 0 && <p class="author__links">{links(d).map((l) => <a href={l.href}>{l.label}</a>)}</p>}
+            {theirBooks.length > 0 && (
+              <ul class="author__books">
+                {theirBooks.map((b) => (
+                  <li>
+                    <img src={b!.data.cover} alt={b!.data.coverAlt} loading="lazy" />
+                    <span>
+                      <strong>{b!.data.title}</strong>
+                      {b!.data.buyUrl && <a href={b!.data.buyUrl}>{b!.data.buyLabel} &rarr;</a>}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        </article>
+      );
+    })}
+  </section>
+
+  {volumes.map((v) => (
+    <section class="young" id="young-authors">
+      <div class="wrap young__row">
+        <div class="young__intro">
+          <p class="eyebrow young__eyebrow">OUR YOUNG AUTHORS</p>
+          <h2 class="display young__title">{v.book ? v.book.data.title : 'Our young authors'}</h2>
+          {v.book?.data.subtitle && <p class="young__sub">{v.book.data.subtitle}</p>}
+          <p class="young__text">{v.names.length} young authors, published under the EION Books imprint. Every name on this shelf belongs to a published author.</p>
+          {v.book && (
+            <div class="young__book">
+              <img src={v.book.data.cover} alt={v.book.data.coverAlt} loading="lazy" />
+              <div>
+                {v.book.data.description && <p>{v.book.data.description}</p>}
+                {v.book.data.buyUrl && <a class="btn btn--dark" href={v.book.data.buyUrl}>{v.book.data.buyLabel} &rarr;</a>}
+              </div>
+            </div>
+          )}
+        </div>
+        <ul class="shelf" aria-label={`Young authors of ${v.book?.data.title ?? 'the anthology'}`}>
+          {v.names.map((n, i) => (
+            <li class="spine" style={`--c:${spineColors[i % spineColors.length]};--h:${[92, 100, 86, 96, 90, 100, 88, 94, 98][i % 9]}%`}>
+              <span>{n}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  ))}
+
+  <section class="band">
+    <div class="wrap band__row">
+      <p class="display band__title">Your book could be <span>next.</span></p>
+      <a href={startHref} class="btn btn--dark">Start Your Project &rarr;</a>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .hero { background: var(--aubergine); color: var(--cream); }
+  .hero__row { display: flex; flex-wrap: wrap; gap: 48px; align-items: flex-end; justify-content: space-between; padding-block: 90px 96px; }
+  .hero__row > div:first-child { flex: 1 1 560px; }
+  .hero__eyebrow { color: var(--marigold); }
+  .hero__title { margin: 0; font-size: clamp(56px, 7vw, 108px); line-height: 0.86; }
+  .hero__title span { color: var(--marigold); }
+  .hero__note { flex: 0 1 420px; border-left: 3px solid var(--marigold); padding-left: 22px; }
+  .hero__note p { margin: 0; color: var(--on-dark); }
+  .hero__jump { margin-top: 14px !important; font-weight: 700; }
+  .hero__jump a { color: var(--marigold); }
+
+  .published { padding-block: 100px 60px; }
+  .published__eyebrow { color: var(--coral); }
+  .author { display: grid; grid-template-columns: minmax(0, 380px) minmax(0, 1fr); gap: 64px; align-items: center; padding-block: 56px; border-top: 1px solid var(--line); }
+  .author--flip { grid-template-columns: minmax(0, 1fr) minmax(0, 380px); }
+  .author--flip .author__photo { order: 2; }
+  .author__photo { position: relative; }
+  .author__photo::before { content: ""; position: absolute; inset: 16px -16px -16px 16px; background: var(--marigold); border-radius: 14px; }
+  .author--flip .author__photo::before { inset: 16px 16px -16px -16px; background: var(--teal); }
+  .author__photo img, .author__initials { position: relative; width: 100%; aspect-ratio: 1; object-fit: cover; object-position: center 25%; border-radius: 14px; background: var(--sand); }
+  .author__initials { display: flex; align-items: center; justify-content: center; font-family: var(--display); font-weight: 800; font-size: 96px; color: var(--aubergine); }
+  .author__name { margin: 0 0 12px; font-size: clamp(42px, 4.6vw, 60px); }
+  .author__of { margin: 0 0 16px; font-size: 19px; font-weight: 600; line-height: 1.5; }
+  .author__bio { margin: 0 0 18px; color: var(--ink-soft); }
+  .author__about, .author__links { margin: 0 0 18px; font-weight: 700; }
+  .author__links { display: flex; flex-wrap: wrap; gap: 18px; }
+  .author__books { list-style: none; margin: 8px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 14px 26px; }
+  .author__books li { display: flex; align-items: center; gap: 12px; max-width: 280px; }
+  .author__books img { width: 64px; height: auto; border-radius: 2px 4px 4px 2px; box-shadow: 0 10px 18px -10px rgba(42,20,51,0.55); }
+  .author__books strong { display: block; font-size: 15px; line-height: 1.3; }
+  .author__books a { font-size: 14px; font-weight: 700; }
+
+  .young { background: var(--marigold); padding-block: 100px; }
+  .young__row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); gap: 64px; align-items: end; }
+  .young__eyebrow { color: var(--aubergine); }
+  .young__title { margin: 0; font-size: clamp(48px, 5.6vw, 80px); }
+  .young__sub { margin: 10px 0 0; font-size: 20px; font-weight: 700; }
+  .young__text { margin: 18px 0 28px; font-size: 18px; max-width: 520px; }
+  .young__book { display: flex; gap: 24px; align-items: center; }
+  .young__book img { width: 150px; flex: none; border-radius: 3px 6px 6px 3px; box-shadow: 0 24px 40px -20px rgba(31,14,39,0.6); }
+  .young__book p { margin: 0 0 16px; font-size: 16px; }
+
+  .shelf { list-style: none; margin: 0; padding: 0 14px; height: 400px; display: flex; align-items: flex-end; gap: 8px; border-bottom: 14px solid var(--aubergine); }
+  .spine { flex: 1; height: var(--h); background: var(--c); border: 2px solid var(--aubergine); border-bottom: 0; border-radius: 4px 4px 0 0; display: flex; align-items: center; justify-content: center; padding: 18px 0; position: relative; }
+  .spine::before, .spine::after { content: ""; position: absolute; left: 0; right: 0; height: 3px; background: var(--marigold); opacity: 0.9; }
+  .spine::before { top: 22px; } .spine::after { bottom: 22px; }
+  .spine span { writing-mode: vertical-rl; transform: rotate(180deg); font-family: var(--display); font-weight: 800; font-stretch: 75%; font-size: 26px; letter-spacing: 0.02em; color: var(--cream); white-space: nowrap; }
+  .spine[style*='--paper'] span { color: var(--aubergine); }
+
+  .band { background: var(--aubergine-deep); color: var(--cream); }
+  .band__row { display: flex; flex-wrap: wrap; gap: 32px; align-items: center; justify-content: space-between; padding-block: 90px; }
+  .band__title { margin: 0; font-size: 56px; line-height: 0.95; }
+  .band__title span { color: var(--marigold); }
+  .band .btn--dark { background: var(--marigold); color: var(--aubergine); }
+
+  @media (max-width: 900px) {
+    .author, .author--flip { grid-template-columns: 1fr; gap: 36px; }
+    .author--flip .author__photo { order: 0; }
+    .author__photo { max-width: 340px; }
+    .young__row { grid-template-columns: 1fr; gap: 48px; }
+    .shelf { height: auto; flex-direction: column; align-items: stretch; gap: 6px; padding: 0; border-bottom: 0; border-left: 12px solid var(--aubergine); }
+    .spine { height: auto; padding: 12px 18px; border-radius: 0 4px 4px 0; border: 2px solid var(--aubergine); border-left: 0; justify-content: flex-start; width: var(--h); }
+    .spine::before, .spine::after { top: 0; bottom: 0; width: 3px; height: auto; left: auto; right: 18px; }
+    .spine::after { right: 26px; }
+    .spine span { writing-mode: horizontal-tb; transform: none; font-size: 22px; }
+  }
+  @media (max-width: 640px) {
+    .hero__row { padding-block: 56px 60px; }
+    .published, .young { padding-block: 64px; }
+    .author { padding-block: 40px; }
+    .band__title { font-size: 40px; }
+    .young__book { flex-direction: column; align-items: flex-start; }
+  }
+</style>
