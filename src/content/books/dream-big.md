@@ -7,7 +7,7 @@ category: Picture book
 series: Peyton's Journey
 cover: /uploads/books/dream-big.jpg
 coverAlt: "Dream Big: Peyton's Hip-Hop Adventure book cover"
-description: "[Approved one-line description]"
+description: "Peyton loves hip-hop and rhyming, but sharing her creativity at the school talent show challenges her confidence."
 buyLabel: Buy the book
 buyUrl: https://peytonsjourney.com/shop/ols/products/dream-big-peytons-hip-hop-adventure
 featured: false

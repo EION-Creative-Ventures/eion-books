@@ -6,7 +6,7 @@ category: Picture book
 series: Peyton's Journey
 cover: /uploads/books/golden-clues.jpg
 coverAlt: "The Secret of the Golden Clues: Peyton's Christmas Adventure book cover"
-description: "[Approved one-line description]"
+description: "A holiday adventure involving mysterious clues, teamwork, problem-solving, and giving."
 buyLabel: Buy the book
 buyUrl: https://peytonsjourney.com/shop/ols/products/the-secret-of-the-golden-clues-peytons-christmas-adventure
 featured: false

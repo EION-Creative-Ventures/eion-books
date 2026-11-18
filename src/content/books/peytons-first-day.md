@@ -6,7 +6,7 @@ category: Picture book
 series: Peyton's Journey
 cover: /uploads/books/peytons-first-day.jpg
 coverAlt: Peyton's First Day at a New School book cover
-description: "[Approved one-line description]"
+description: "A story about navigating a new school, making friends, embracing change, and finding courage."
 buyLabel: Buy the book
 buyUrl: https://peytonsjourney.com/shop/ols/products/peytons-first-day-at-a-new-school
 featured: false
