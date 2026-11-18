@@ -1,0 +1,79 @@
+# EION Books — content dashboard settings (Decap CMS)
+# Proof of concept: Books section only.
+
+# ---------------------------------------------------------------
+# LOGIN: Decap Turbo (approved). Editors sign in with a Turbo account.
+# turbo_site_id is filled in after the Turbo site is created.
+# It is not a password: access is controlled by Turbo invitations.
+backend:
+  name: turbo-github
+  turbo_site_id: TURBO_SITE_ID_GOES_HERE
+  branch: main
+# ---------------------------------------------------------------
+
+# Lets the dashboard edit files on this computer during local testing only.
+local_backend: true
+
+# Drafts -> In review -> Ready -> Publish
+publish_mode: editorial_workflow
+
+site_url: http://localhost:4321
+display_url: http://localhost:4321
+logo_url: /admin/eion-logo.svg
+
+media_folder: public/uploads/books
+public_folder: /uploads/books
+
+collections:
+  - name: books
+    label: Books
+    label_singular: Book
+    description: Books published under the EION Books imprint. These appear on the Our Books page.
+    folder: src/content/books
+    create: true
+    slug: "{{slug}}"
+    extension: md
+    format: frontmatter
+    summary: "{{title}}"
+    sortable_fields: [order, title]
+    view_filters:
+      - { label: Picture books, field: category, pattern: Picture book }
+      - { label: For parents, field: category, pattern: For parents }
+    fields:
+      - { label: Title, name: title, widget: string }
+      - { label: Subtitle, name: subtitle, widget: string, required: false, hint: "Optional. Shown under the title." }
+      - { label: Author, name: author, widget: string, default: Paula Banks }
+      - { label: Illustrator, name: illustrator, widget: string, required: false }
+      - label: Category
+        name: category
+        widget: select
+        options: [Picture book, For parents]
+        hint: Controls the filter buttons on the Our Books page.
+      - { label: Series, name: series, widget: string, required: false, hint: "Optional, for example: Peyton's Journey" }
+      - label: Cover image
+        name: cover
+        widget: image
+        choose_url: false
+        hint: "Upload a front cover JPG or PNG, at least 1000px wide and under 2 MB."
+      - label: Cover description (for screen readers)
+        name: coverAlt
+        widget: string
+        hint: "Example: Story Hustle book cover"
+      - label: Book description
+        name: description
+        widget: text
+        hint: Two or three sentences for the featured book, one sentence for the others.
+      - { label: Buy button text, name: buyLabel, widget: string, default: Buy the book }
+      - label: Buy link
+        name: buyUrl
+        widget: string
+        required: false
+        hint: "Full web address where readers buy this book (Payhip, Amazon, etc.)"
+        pattern: ['^https?://', 'Must start with https://']
+      - label: Feature this book at the top of the page
+        name: featured
+        widget: boolean
+        default: false
+        hint: Turn this on for one book only.
+      - { label: Display order, name: order, widget: number, value_type: int, default: 100, hint: "Lower numbers appear first." }
+      - { label: Show on website, name: published, widget: boolean, default: true, hint: "Turn off to hide this book without deleting it." }

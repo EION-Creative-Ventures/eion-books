@@ -1,0 +1,67 @@
+---
+// Shared site navigation (Bold Spine). Pages not yet built point to "#".
+const links = [
+  { label: 'Publishing Services', href: '#' },
+  { label: 'Creative Studio', href: '#' },
+  { label: 'Our Books', href: '/our-books/' },
+  { label: 'Our Work', href: '#' },
+  { label: 'About', href: '#' },
+];
+const current = Astro.url.pathname;
+---
+<header class="nav">
+  <div class="wrap nav__row">
+    <a href="/our-books/" class="logo" aria-label="EION Books home">
+      <span class="logo__word">EION</span>
+      <span class="logo__spine">BOOKS</span>
+    </a>
+    <div class="nav__mobile">
+      <a href="#" class="btn btn--dark nav__start">Start</a>
+      <button type="button" class="nav__toggle" aria-label="Open menu" aria-expanded="false" aria-controls="primary-nav">
+        <svg width="20" height="14" viewBox="0 0 20 14" aria-hidden="true"><path d="M0 1h20M0 7h20M0 13h20" stroke="currentColor" stroke-width="2"/></svg>
+      </button>
+    </div>
+    <nav aria-label="Primary" class="nav__links" id="primary-nav">
+      {links.map((l) => (
+        <a href={l.href} aria-current={current === l.href ? 'page' : undefined}>{l.label}</a>
+      ))}
+      <a href="#" class="btn btn--dark nav__cta">Start Your Project</a>
+    </nav>
+  </div>
+</header>
+
+<script>
+  const t = document.querySelector<HTMLButtonElement>('.nav__toggle');
+  const n = document.getElementById('primary-nav');
+  t?.addEventListener('click', () => {
+    const open = t.getAttribute('aria-expanded') === 'true';
+    t.setAttribute('aria-expanded', String(!open));
+    t.setAttribute('aria-label', open ? 'Open menu' : 'Close menu');
+    n?.classList.toggle('is-open', !open);
+  });
+</script>
+
+<style>
+  .nav { background: var(--cream); border-bottom: 1px solid var(--line); }
+  .nav__row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px; padding-block: 22px; }
+  .logo { display: flex; align-items: stretch; text-decoration: none; }
+  .logo__word { background: var(--aubergine); color: var(--cream); padding: 9px 13px; font-family: var(--display); font-weight: 800; font-stretch: 75%; font-size: 28px; line-height: 0.9; }
+  .logo__spine { writing-mode: vertical-rl; transform: rotate(180deg); background: var(--marigold); color: var(--aubergine); padding: 6px 5px; font-family: var(--display); font-weight: 700; font-size: 10px; letter-spacing: 0.2em; }
+  .nav__links { display: flex; flex-wrap: wrap; align-items: center; gap: 30px; font-size: 15px; font-weight: 600; }
+  .nav__links a:not(.btn) { text-decoration: none; }
+  .nav__links a[aria-current='page'] { text-decoration: underline; text-decoration-color: var(--marigold); text-decoration-thickness: 3px; text-underline-offset: 6px; }
+  .nav__cta { padding: 13px 22px; font-size: 15px; }
+  .nav__mobile { display: none; align-items: center; gap: 10px; }
+  .nav__start { padding: 10px 14px; font-size: 13px; }
+  .nav__toggle { width: 44px; height: 44px; border: 1.5px solid var(--aubergine); border-radius: 6px; background: transparent; color: var(--aubergine); display: flex; align-items: center; justify-content: center; cursor: pointer; }
+  @media (max-width: 900px) {
+    .nav__row { padding-block: 14px; }
+    .logo__word { font-size: 22px; padding: 7px 10px; }
+    .logo__spine { font-size: 8px; padding: 4px 3px; }
+    .nav__mobile { display: flex; }
+    .nav__links { display: none; width: 100%; flex-direction: column; align-items: flex-start; gap: 0; font-size: 18px; border-top: 1px solid var(--line); }
+    .nav__links.is-open { display: flex; }
+    .nav__links a:not(.btn) { padding: 14px 0; width: 100%; border-bottom: 1px solid var(--line); }
+    .nav__links .nav__cta { margin: 16px 0 6px; }
+  }
+</style>

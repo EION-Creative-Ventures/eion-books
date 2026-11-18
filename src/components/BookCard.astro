@@ -1,0 +1,27 @@
+---
+import type { CollectionEntry } from 'astro:content';
+interface Props { book: CollectionEntry<'books'> }
+const { book } = Astro.props;
+const b = book.data;
+const byline = ['by ' + b.author, b.illustrator ? 'illustrated by ' + b.illustrator : null].filter(Boolean).join(' · ');
+---
+<article class="book reveal" data-category={b.category}>
+  <div class="book__frame lift">
+    <img src={b.cover} alt={b.coverAlt} loading="lazy" />
+  </div>
+  <span class="badge badge--imprint">EION IMPRINT</span>
+  <h3 class="book__title">{b.title}</h3>
+  {b.subtitle && <p class="book__meta">{b.subtitle}</p>}
+  <p class="book__meta">{b.description}</p>
+  <p class="book__meta">{byline}</p>
+  {b.buyUrl && <a class="book__buy" href={b.buyUrl}>{b.buyLabel} &rarr;</a>}
+</article>
+
+<style>
+  .book__frame { aspect-ratio: 1; background: var(--cover-bg); border-radius: 10px; display: flex; align-items: center; justify-content: center; }
+  .book__frame img { width: 82%; max-height: 88%; object-fit: contain; border-radius: 2px 5px 5px 2px; box-shadow: 0 22px 36px -16px rgba(42,20,51,0.5); }
+  .badge { margin-top: 18px; }
+  .book__title { margin: 10px 0 4px; font-size: 21px; line-height: 1.25; }
+  .book__meta { margin: 0 0 6px; font-size: 15px; color: var(--mauve); }
+  .book__buy { display: inline-block; margin-top: 10px; font-weight: 700; }
+</style>

@@ -1,0 +1,37 @@
+---
+// Shared site footer (Bold Spine)
+---
+<footer class="footer">
+  <div class="footer__stripe" aria-hidden="true">
+    <span style="flex:3;background:var(--marigold)"></span><span style="flex:2;background:var(--coral)"></span><span style="flex:4;background:var(--teal)"></span><span style="flex:1;background:var(--cream)"></span><span style="flex:2;background:var(--marigold)"></span>
+  </div>
+  <div class="wrap footer__row">
+    <div class="footer__brand">
+      <p class="display footer__name">EION BOOKS</p>
+      <p class="footer__line">Professional publishing. Author-owned.</p>
+      <p class="footer__blurb">Publishing services and creative design for independent authors. Your book, your accounts, your royalties.</p>
+    </div>
+    <nav aria-label="Footer" class="footer__nav">
+      <div><span>SERVICES</span><a href="#">Publishing Services</a><a href="#">Creative Studio</a><a href="#">Start Your Project</a></div>
+      <div><span>BOOKS</span><a href="/our-books/">Our Books</a><a href="#">Our Work</a><a href="#">About</a></div>
+      <div><span>CONNECT</span><a href="#">Instagram</a><a href="#">LinkedIn</a><a href="#">Privacy Policy</a></div>
+    </nav>
+  </div>
+  <div class="wrap footer__legal">&copy; EION Books, a brand of EION Creative Ventures, LLC</div>
+</footer>
+
+<style>
+  .footer { background: var(--aubergine-deep); color: var(--on-dark); font-size: 15px; }
+  .footer__stripe { display: flex; height: 8px; }
+  .footer__row { display: flex; flex-wrap: wrap; gap: 48px; justify-content: space-between; padding-block: 72px 40px; }
+  .footer__brand { flex: 1 1 320px; }
+  .footer__name { margin: 0; font-size: 44px; color: var(--cream); }
+  .footer__line { margin: 14px 0 0; font-weight: 700; color: var(--marigold); }
+  .footer__blurb { margin: 18px 0 0; max-width: 340px; color: var(--on-dark-quiet); }
+  .footer__nav { display: flex; flex-wrap: wrap; gap: 64px; }
+  .footer__nav div { display: flex; flex-direction: column; gap: 12px; }
+  .footer__nav span { font-family: var(--display); font-weight: 700; font-size: 12px; letter-spacing: 0.18em; color: var(--marigold); }
+  .footer__nav a { color: var(--on-dark); text-decoration: none; }
+  .footer__nav a:hover { color: var(--cream); text-decoration: underline; }
+  .footer__legal { padding-block: 22px 36px; border-top: 1px solid rgba(255,246,233,0.12); font-size: 13px; color: var(--on-dark-quiet); }
+</style>
