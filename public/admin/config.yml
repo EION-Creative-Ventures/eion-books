@@ -1,5 +1,5 @@
 # EION Books — content dashboard settings (Decap CMS)
-# Proof of concept: Books section only.
+# Sections: Books, Portfolio, Testimonials, About page, Creative Studio page, Site settings.
 
 # ---------------------------------------------------------------
 # LOGIN: Decap Turbo (approved). Editors sign in with a Turbo account.
@@ -21,11 +21,14 @@ site_url: https://eion-books-dev.netlify.app
 display_url: https://eion-books-dev.netlify.app
 logo_url: /admin/eion-logo.svg
 
+# Default image folder (each section below can use its own).
 media_folder: public/uploads/books
 public_folder: /uploads/books
 
 collections:
   - name: books
+    media_folder: /public/uploads/books
+    public_folder: /uploads/books
     label: Books
     label_singular: Book
     description: Books published under the EION Books imprint. These appear on the Our Books page.
@@ -73,7 +76,274 @@ collections:
       - label: Feature this book at the top of the page
         name: featured
         widget: boolean
+        required: false
         default: false
         hint: Turn this on for one book only.
       - { label: Display order, name: order, widget: number, value_type: int, default: 100, hint: "Lower numbers appear first." }
-      - { label: Show on website, name: published, widget: boolean, default: true, hint: "Turn off to hide this book without deleting it." }
+      - { label: Show on website, name: published, widget: boolean, required: false, default: true, hint: "Turn off to hide this book without deleting it." }
+
+  - name: work
+    label: Portfolio
+    label_singular: Project
+    description: "Client projects and website showcase. Choose where each project appears: the Our Work page, the Creative Studio website portfolio, or both. Client projects stay hidden until \"Author gave written permission\" is on."
+    folder: src/content/work
+    media_folder: /public/uploads/portfolio
+    public_folder: /uploads/portfolio
+    create: true
+    slug: "{{slug}}"
+    extension: md
+    format: frontmatter
+    summary: "{{title}} · {{category}}"
+    sortable_fields: [order, title]
+    view_filters:
+      - { label: Creative Studio portfolio, field: showOnStudio, pattern: true }
+      - { label: Our Work page, field: showOnWork, pattern: true }
+      - { label: Client projects, field: projectFor, pattern: Client }
+    fields:
+      - { label: Project name, name: title, widget: string, hint: "Example: EION Books Shop" }
+      - { label: Client or brand name, name: client, widget: string }
+      - label: Project for
+        name: projectFor
+        widget: select
+        options: [Client, EION Creative Ventures]
+        default: Client
+        hint: "EION Creative Ventures = one of your own brands. Client projects need written permission before they appear."
+      - label: Category
+        name: category
+        widget: select
+        options: [Custom Book Storefront, Custom Multi-Page Website, Custom Author Website, Canva Author Website, Author Website, Book Landing Page, Course Landing Page, Book Resource Hub, Launch Graphics, Author Branding, Book Production]
+        hint: Shown on the project card.
+      - label: Service type (for the Our Work page)
+        name: type
+        widget: select
+        options: [Creative Studio, Author-published]
+        default: Creative Studio
+        hint: "Creative Studio = design work. Author-published = a book the author published with EION Publishing Services."
+      - { label: Short service label, name: service, widget: string, hint: "Example: Author website, or Landing page + launch graphics" }
+      - { label: Book type, name: bookType, widget: string, required: false, hint: "Optional, for example: Children's book, Devotional" }
+      - { label: Short description, name: summary, widget: text, hint: "Two or three sentences: what the website is for and what it does. Describe only features that actually exist." }
+      - { label: Longer description (featured projects), name: description, widget: text, required: false, hint: "Shown when the project is featured large on the Creative Studio page." }
+      - label: What we built
+        name: features
+        widget: list
+        required: false
+        field: { label: Feature, name: feature, widget: string }
+        hint: "One short line per feature, for example: Bookshelf filters by age and interest"
+      - { label: What EION did (Our Work page), name: whatWeDid, widget: string, required: false, hint: "Shown on the featured Our Work project. Example: Formatting, cover coordination, KDP setup" }
+      - label: Main screenshot (desktop)
+        name: image
+        widget: image
+        choose_url: false
+        hint: "A wide desktop screenshot, about 1600 x 900, JPG, PNG, or WEBP under 1 MB. Check that it shows no private or unfinished content."
+      - { label: Main screenshot description, name: imageAlt, widget: string, hint: "Describe what the screenshot shows, for screen readers." }
+      - { label: Phone screenshot, name: mobileImage, widget: image, required: false, choose_url: false, hint: "Optional. A tall phone screenshot, about 750 x 1400." }
+      - { label: Phone screenshot description, name: mobileImageAlt, widget: string, required: false }
+      - label: Additional screenshots
+        name: gallery
+        widget: list
+        required: false
+        summary: "{{fields.view}} · {{fields.alt}}"
+        fields:
+          - { label: Screenshot, name: image, widget: image, choose_url: false }
+          - { label: Description, name: alt, widget: string }
+          - { label: View, name: view, widget: select, options: [Desktop, Mobile], required: false, hint: "Leave blank for a desktop screenshot." }
+      - label: Live website link
+        name: link
+        widget: string
+        required: false
+        pattern: ['^(https?://.*)?$', 'Must start with https://']
+      - { label: Link button text, name: linkLabel, widget: string, default: Visit the live site }
+      - { label: Client quote, name: quote, widget: text, required: false, hint: Optional. Shown on the featured Our Work project. }
+      - { label: Quote by, name: quoteBy, widget: string, required: false, hint: "Example: Tiffany Sayles, author & EION client" }
+      - { label: Show on the Our Work page, name: showOnWork, widget: boolean, required: false, default: true }
+      - { label: Show in the Creative Studio website portfolio, name: showOnStudio, widget: boolean, required: false, default: false }
+      - { label: Feature large on the Creative Studio page, name: studioFeatured, widget: boolean, required: false, default: false, hint: "Best for one or two projects." }
+      - { label: Feature at the top of the Our Work page, name: featured, widget: boolean, required: false, default: false, hint: Turn this on for one project only. }
+      - { label: Display order, name: order, widget: number, value_type: int, default: 100, hint: "Lower numbers appear first." }
+      - label: Author gave written permission
+        name: permission
+        widget: boolean
+        required: false
+        default: false
+        hint: "Required for client projects. A client project stays hidden until this is on."
+      - { label: Show on website, name: published, widget: boolean, required: false, default: true, hint: "Turn off to hide without deleting." }
+
+  - name: testimonials
+    label: Testimonials
+    label_singular: Testimonial
+    description: Client quotes shown in the "What authors say" section.
+    folder: src/content/testimonials
+    media_folder: /public/uploads/testimonials
+    public_folder: /uploads/testimonials
+    create: true
+    slug: "{{name}}"
+    identifier_field: name
+    extension: md
+    format: frontmatter
+    summary: "{{name}}"
+    sortable_fields: [order, name]
+    fields:
+      - { label: Quote, name: quote, widget: text, hint: "Use the client's exact words. No quotation marks needed." }
+      - { label: Name, name: name, widget: string }
+      - { label: Role, name: role, widget: string, required: false, hint: "Example: Author & EION client" }
+      - { label: Photo, name: photo, widget: image, required: false, choose_url: false, hint: "Optional square photo. Without one, their initials appear." }
+      - { label: Photo description, name: photoAlt, widget: string, required: false }
+      - { label: Display order, name: order, widget: number, value_type: int, default: 100, hint: "Lower numbers appear first." }
+      - { label: Show on website, name: published, widget: boolean, required: false, default: true }
+
+  - name: pages
+    label: Pages
+    description: Text and photos on individual pages.
+    media_folder: /public/uploads/about
+    public_folder: /uploads/about
+    files:
+      - name: about
+        label: About page
+        file: src/content/pages/about.md
+        fields:
+          - { label: Small heading, name: heroEyebrow, widget: string }
+          - { label: Headline, name: heroTitle, widget: string }
+          - { label: Headline ending (in gold), name: heroAccent, widget: string, required: false }
+          - { label: Intro, name: heroIntro, widget: text }
+          - { label: Our Story heading, name: storyHeading, widget: string }
+          - { label: Our Story, name: body, widget: markdown, buttons: [bold, italic, link], editor_components: [], hint: "Leave a blank line between paragraphs." }
+          - label: What we believe
+            name: beliefs
+            widget: list
+            summary: "{{fields.title}}"
+            fields:
+              - { label: Title, name: title, widget: string }
+              - { label: Text, name: text, widget: text }
+          - { label: Founder name, name: founderName, widget: string }
+          - { label: Founder bio, name: founderBio, widget: text }
+          - { label: Experience and credentials, name: credentials, widget: text, required: false, hint: Optional second paragraph. }
+          - { label: Headshot, name: headshot, widget: image, choose_url: false }
+          - { label: Headshot description, name: headshotAlt, widget: string }
+          - label: Your author website link
+            name: authorSiteUrl
+            widget: string
+            required: false
+            hint: Adds a button under your bio.
+            pattern: ['^(https?://.*)?$', 'Must start with https://']
+          - label: LitKids Create link
+            name: litkidsUrl
+            widget: string
+            required: false
+            pattern: ['^(https?://.*)?$', 'Must start with https://']
+
+  - name: studio
+    label: Creative Studio page
+    description: Headlines, services, and section text on the Creative Studio page. Portfolio projects are managed in Portfolio.
+    media_folder: /public/uploads/portfolio
+    public_folder: /uploads/portfolio
+    files:
+      - name: creative-studio
+        label: Creative Studio page
+        file: src/content/pages/creative-studio.yaml
+        format: yml
+        fields:
+          - { label: "Hero: small heading", name: heroEyebrow, widget: string }
+          - { label: "Hero: headline", name: heroTitle, widget: string }
+          - { label: "Hero: intro", name: heroIntro, widget: text }
+          - { label: "Hero: main button", name: heroButton, widget: string }
+          - { label: "Hero: second button", name: heroSecondButton, widget: string }
+          - { label: "Hero: desktop screenshot", name: heroImage, widget: image, choose_url: false }
+          - { label: "Hero: desktop screenshot description", name: heroImageAlt, widget: string }
+          - { label: "Hero: phone screenshot", name: heroPhoneImage, widget: image, required: false, choose_url: false }
+          - { label: "Hero: phone screenshot description", name: heroPhoneImageAlt, widget: string, required: false }
+          - { label: "Services: small heading", name: servicesEyebrow, widget: string }
+          - { label: "Services: heading", name: servicesHeading, widget: string }
+          - label: Website services
+            name: services
+            widget: list
+            summary: "{{fields.title}}"
+            hint: Do not add prices until packages are final.
+            fields:
+              - { label: Service name, name: title, widget: string }
+              - { label: Description, name: text, widget: text }
+              - { label: Highlight line, name: note, widget: string, required: false, hint: "Optional, for example: Optional self-editing dashboard available" }
+          - { label: "Specialized projects: text", name: customText, widget: text }
+          - { label: "Specialized projects: button", name: customButton, widget: string }
+          - { label: "Portfolio: small heading", name: portfolioEyebrow, widget: string }
+          - { label: "Portfolio: heading", name: portfolioHeading, widget: string }
+          - { label: "Portfolio: intro", name: portfolioIntro, widget: text }
+          - { label: "Portfolio: small print", name: portfolioNote, widget: text, required: false }
+          - { label: "Dashboard: small heading", name: dashboardEyebrow, widget: string }
+          - { label: "Dashboard: heading", name: dashboardHeading, widget: string }
+          - { label: "Dashboard: text", name: dashboardText, widget: text }
+          - label: "Dashboard: points"
+            name: dashboardPoints
+            widget: list
+            summary: "{{fields.title}}"
+            fields:
+              - { label: Title, name: title, widget: string }
+              - { label: Text, name: text, widget: text }
+          - { label: "Dashboard: note", name: dashboardNote, widget: string, required: false }
+          - { label: "Dashboard: screenshot", name: dashboardImage, widget: image, required: false, choose_url: false, hint: "Use a screenshot with no private or test content." }
+          - { label: "Dashboard: screenshot description", name: dashboardImageAlt, widget: string, required: false }
+          - { label: "More services: small heading", name: launchEyebrow, widget: string }
+          - { label: "More services: heading", name: launchHeading, widget: string }
+          - label: "More services: groups"
+            name: launchGroups
+            widget: list
+            summary: "{{fields.title}}"
+            fields:
+              - { label: Group name, name: title, widget: string }
+              - { label: Services, name: items, widget: list, field: { label: Service, name: item, widget: string } }
+          - { label: "More services: link text", name: launchLinkText, widget: string, required: false }
+          - { label: "Process: heading", name: stepsHeading, widget: string }
+          - label: "Process: steps"
+            name: steps
+            widget: list
+            summary: "{{fields.title}}"
+            fields:
+              - { label: Title, name: title, widget: string }
+              - { label: Text, name: text, widget: text }
+          - { label: "Publishing band: text", name: pairText, widget: string }
+          - { label: "Publishing band: button", name: pairButton, widget: string }
+          - { label: "Closing: heading", name: finalHeading, widget: string }
+          - { label: "Closing: button", name: finalButton, widget: string }
+
+  - name: settings
+    label: Site settings
+    description: Contact details, links, and footer text used across the whole site.
+    files:
+      - name: site
+        label: Site settings
+        file: src/content/settings/site.yaml
+        format: yml
+        fields:
+          - label: Contact email
+            name: contactEmail
+            widget: string
+            required: false
+            hint: Shown in the footer. Also used for the Start Your Project button if no form link is set.
+            pattern: ['^([^@\s]+@[^@\s]+\.[^@\s]+)?$', 'Enter a valid email address']
+          - label: Start Your Project link
+            name: startProjectUrl
+            widget: string
+            required: false
+            hint: Where every Start Your Project button goes (your intake form). Leave blank to use the contact email.
+            pattern: ['^(https?://.*)?$', 'Must start with https://']
+          - { label: Footer tagline, name: footerTagline, widget: string, required: false }
+          - { label: Footer description, name: footerBlurb, widget: text, required: false }
+          - label: Instagram link
+            name: instagramUrl
+            widget: string
+            required: false
+            pattern: ['^(https?://.*)?$', 'Must start with https://']
+          - label: LinkedIn link
+            name: linkedinUrl
+            widget: string
+            required: false
+            pattern: ['^(https?://.*)?$', 'Must start with https://']
+          - label: Facebook link
+            name: facebookUrl
+            widget: string
+            required: false
+            pattern: ['^(https?://.*)?$', 'Must start with https://']
+          - label: Privacy policy link
+            name: privacyUrl
+            widget: string
+            required: false
+            pattern: ['^(https?://.*)?$', 'Must start with https://']

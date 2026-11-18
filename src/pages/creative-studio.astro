@@ -1,0 +1,219 @@
+---
+import { getEntry, getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import BrowserFrame from '../components/BrowserFrame.astro';
+import PhoneFrame from '../components/PhoneFrame.astro';
+import ShowcaseFeature from '../components/ShowcaseFeature.astro';
+import ShowcaseCard from '../components/ShowcaseCard.astro';
+import Testimonials from '../components/Testimonials.astro';
+import { getSettings } from '../lib/settings';
+
+const entry = await getEntry('studio', 'creative-studio');
+if (!entry) throw new Error('Creative Studio page content is missing (src/content/pages/creative-studio.yaml).');
+const c = entry.data;
+
+// Website portfolio: switched on for the Studio page; client projects also need permission.
+const projects = (await getCollection('work', ({ data }) => data.published && data.showOnStudio
+  && (data.projectFor !== 'Client' || data.permission)))
+  .sort((a, b) => a.data.order - b.data.order);
+const featured = projects.filter((p) => p.data.studioFeatured);
+const others = projects.filter((p) => !p.data.studioFeatured);
+const { startHref } = await getSettings();
+
+// Colour the last sentence of the headline in gold.
+const parts = c.heroTitle.trim().split(/(?<=\.)\s+/);
+const lastLine = parts.length > 1 ? parts.pop() : '';
+const firstLines = parts.join(' ');
+const spines = ['var(--marigold)', 'var(--teal)', 'var(--coral)'];
+---
+<Base title="EION Creative Studio | Author Websites, Landing Pages & Launch Design" description={c.heroIntro}>
+  <section class="hero">
+    <div class="wrap hero__row">
+      <div class="hero__copy">
+        <p class="eyebrow hero__eyebrow">{c.heroEyebrow}</p>
+        <h1 class="display caps hero__title">{firstLines} {lastLine && <span>{lastLine}</span>}</h1>
+        <p class="hero__intro">{c.heroIntro}</p>
+        <div class="hero__ctas">
+          <a class="btn btn--marigold" href={startHref}>{c.heroButton} &rarr;</a>
+          <a class="btn btn--ghost" href="#portfolio">{c.heroSecondButton} &darr;</a>
+        </div>
+      </div>
+      <div class="hero__media">
+        <BrowserFrame src={c.heroImage} alt={c.heroImageAlt} eager dark />
+        {c.heroPhoneImage && <div class="hero__phone"><PhoneFrame src={c.heroPhoneImage} alt={c.heroPhoneImageAlt || ''} /></div>}
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap services">
+    <p class="eyebrow services__eyebrow">{c.servicesEyebrow}</p>
+    <h2 class="display services__title">{c.servicesHeading}</h2>
+    <div class="services__grid">
+      {c.services.map((s, i) => (
+        <article class="service reveal" style={`--spine:${spines[i % spines.length]}`}>
+          <h3>{s.title}</h3>
+          <p>{s.text}</p>
+          {s.note && <p class="service__note">{s.note}</p>}
+        </article>
+      ))}
+    </div>
+    <div class="custom reveal">
+      <p>{c.customText}</p>
+      <a class="btn btn--dark" href={startHref}>{c.customButton} &rarr;</a>
+    </div>
+  </section>
+
+  <section class="portfolio" id="portfolio">
+    <div class="wrap">
+      <div class="portfolio__head">
+        <p class="eyebrow portfolio__eyebrow">{c.portfolioEyebrow}</p>
+        <h2 class="display portfolio__title">{c.portfolioHeading}</h2>
+        <p class="portfolio__intro">{c.portfolioIntro}</p>
+      </div>
+      {featured.map((p, i) => <ShowcaseFeature project={p} flip={i % 2 === 1} lead={i === 0} />)}
+      {others.length > 0 && (
+        <div class="portfolio__grid">{others.map((p) => <ShowcaseCard project={p} />)}</div>
+      )}
+      {c.portfolioNote && <p class="portfolio__note">{c.portfolioNote}</p>}
+    </div>
+  </section>
+
+  <section class="dash">
+    <div class="wrap dash__row">
+      <div class="dash__copy">
+        <p class="eyebrow dash__eyebrow">{c.dashboardEyebrow}</p>
+        <h2 class="display dash__title">{c.dashboardHeading}</h2>
+        <p class="dash__text">{c.dashboardText}</p>
+        <dl class="dash__points">
+          {c.dashboardPoints.map((pt) => (<div><dt>{pt.title}</dt><dd>{pt.text}</dd></div>))}
+        </dl>
+        {c.dashboardNote && <p class="dash__note">{c.dashboardNote}</p>}
+      </div>
+      {c.dashboardImage && <div class="dash__media reveal"><BrowserFrame src={c.dashboardImage} alt={c.dashboardImageAlt || ''} dark /></div>}
+    </div>
+  </section>
+
+  <section class="launch">
+    <div class="wrap">
+      <p class="eyebrow launch__eyebrow">{c.launchEyebrow}</p>
+      <h2 class="display launch__title">{c.launchHeading}</h2>
+      <div class="launch__grid">
+        {c.launchGroups.map((g) => (
+          <div class="launch__group reveal">
+            <h3>{g.title}</h3>
+            <ul>{g.items.map((it) => <li>{it}</li>)}</ul>
+          </div>
+        ))}
+      </div>
+      {c.launchLinkText && <p class="launch__link"><a href="/our-work/">{c.launchLinkText} &rarr;</a></p>}
+    </div>
+  </section>
+
+  <section class="wrap steps">
+    <h2 class="display steps__title">{c.stepsHeading}</h2>
+    <ol class="steps__list">
+      {c.steps.map((s, i) => (
+        <li class="reveal"><span class="display steps__num">{i + 1}</span><h3>{s.title}</h3>{s.text && <p>{s.text}</p>}</li>
+      ))}
+    </ol>
+  </section>
+
+  <Testimonials />
+
+  <section class="pair">
+    <div class="wrap pair__row">
+      <p class="pair__text">{c.pairText}</p>
+      <a class="btn btn--dark" href="#">{c.pairButton} &rarr;</a>
+    </div>
+  </section>
+
+  <section class="final">
+    <div class="wrap final__row">
+      <p class="display final__title">{c.finalHeading}</p>
+      <a class="btn btn--marigold" href={startHref}>{c.finalButton} &rarr;</a>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .btn--ghost { border: 2px solid var(--cream); color: var(--cream); padding: 15px 26px; }
+  .btn--ghost:hover { background: var(--cream); color: var(--teal); }
+
+  .hero { background: var(--teal); color: var(--cream); overflow: hidden; }
+  .hero__row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); gap: 56px; align-items: center; padding-block: 88px 104px; }
+  .hero__eyebrow { color: var(--marigold); }
+  .hero__title { margin: 0; font-size: clamp(50px, 6vw, 92px); line-height: 0.88; }
+  .hero__title span { color: var(--marigold); }
+  .hero__intro { margin: 26px 0 0; max-width: 520px; font-size: 20px; color: var(--cream); }
+  .hero__ctas { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 34px; }
+  .hero__media { position: relative; padding-bottom: 40px; }
+  .hero__phone { position: absolute; width: 22%; max-width: 150px; left: -48px; bottom: 0; }
+
+  .services { padding-block: 110px 100px; }
+  .services__eyebrow { color: var(--coral); }
+  .services__title { margin: 0 0 44px; font-size: clamp(42px, 5vw, 64px); }
+  .services__grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 28px; }
+  .service { background: var(--paper); border-radius: 14px; border-top: 8px solid var(--spine); padding: 32px 30px 30px; box-shadow: 0 18px 40px -30px rgba(42,20,51,0.35); }
+  .service h3 { margin: 0 0 12px; font-size: 24px; line-height: 1.2; }
+  .service p { margin: 0; color: var(--ink-soft); }
+  .service .service__note { margin-top: 18px; display: inline-block; padding: 6px 12px; border-radius: 6px; background: var(--teal); color: var(--cream); font-size: 14px; font-weight: 700; }
+  .custom { margin-top: 32px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px 32px; padding: 28px 32px; border: 2px solid var(--aubergine); border-radius: 14px; }
+  .custom p { margin: 0; flex: 1 1 460px; font-weight: 500; }
+
+  .portfolio { background: var(--paper); padding-block: 110px 100px; border-top: 1px solid var(--line); }
+  .portfolio__head { max-width: 820px; margin-bottom: 40px; }
+  .portfolio__eyebrow { color: var(--teal); }
+  .portfolio__title { margin: 0 0 18px; font-size: clamp(48px, 6vw, 84px); }
+  .portfolio__intro { margin: 0; font-size: 20px; color: var(--ink-soft); }
+  .portfolio__grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 72px 56px; padding-top: 88px; border-top: 1px solid var(--line); }
+  @media (max-width: 1100px) { .portfolio__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 700px) { .portfolio__grid { grid-template-columns: 1fr; gap: 64px; padding-top: 56px; } }
+  .portfolio__note { margin: 56px 0 0; font-size: 14px; color: var(--mauve); }
+
+  .dash { background: var(--aubergine); color: var(--cream); padding-block: 110px; }
+  .dash__row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: 64px; align-items: center; }
+  .dash__eyebrow { color: var(--marigold); }
+  .dash__title { margin: 0 0 22px; font-size: clamp(44px, 5vw, 68px); }
+  .dash__text { margin: 0 0 30px; font-size: 19px; color: var(--on-dark); }
+  .dash__points { margin: 0; display: grid; gap: 18px; }
+  .dash__points div { border-left: 3px solid var(--marigold); padding-left: 16px; }
+  .dash__points dt { font-weight: 700; color: var(--cream); }
+  .dash__points dd { margin: 2px 0 0; color: var(--on-dark); }
+  .dash__note { margin: 28px 0 0; font-size: 15px; color: var(--on-dark-quiet); }
+
+  .launch { background: var(--sand); padding-block: 100px; }
+  .launch__eyebrow { color: var(--coral); }
+  .launch__title { margin: 0 0 40px; font-size: clamp(40px, 4.6vw, 60px); max-width: 900px; }
+  .launch__grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 28px; }
+  .launch__group { background: var(--paper); border-radius: 14px; padding: 30px; }
+  .launch__group h3 { margin: 0 0 14px; font-size: 22px; }
+  .launch__group ul { margin: 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 8px; }
+  .launch__group li { padding: 7px 14px; border-radius: 999px; border: 1.5px solid var(--aubergine); font-size: 15px; font-weight: 600; }
+  .launch__link { margin: 32px 0 0; font-weight: 700; }
+
+  .steps { padding-block: 110px; }
+  .steps__title { margin: 0 0 44px; font-size: clamp(40px, 4.6vw, 60px); }
+  .steps__list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 32px; }
+  .steps__list li { border-top: 3px solid var(--aubergine); padding-top: 18px; }
+  .steps__num { font-size: 48px; color: var(--teal); }
+  .steps__list h3 { margin: 8px 0 6px; font-size: 21px; }
+  .steps__list p { margin: 0; color: var(--ink-soft); }
+
+  .pair { background: var(--marigold); }
+  .pair__row { display: flex; flex-wrap: wrap; gap: 24px; align-items: center; justify-content: space-between; padding-block: 56px; }
+  .pair__text { margin: 0; font-size: 22px; font-weight: 700; flex: 1 1 420px; }
+  .final { background: var(--aubergine-deep); color: var(--cream); }
+  .final__row { display: flex; flex-wrap: wrap; gap: 28px; align-items: center; justify-content: space-between; padding-block: 90px; }
+  .final__title { margin: 0; font-size: clamp(44px, 5vw, 68px); }
+
+  @media (max-width: 960px) {
+    .hero__row, .dash__row { grid-template-columns: 1fr; }
+    .hero__row { padding-block: 56px 72px; gap: 44px; }
+    .hero__phone { left: auto; right: -8px; width: 30%; }
+  }
+  @media (max-width: 640px) {
+    .services, .portfolio, .dash, .launch, .steps { padding-block: 64px; }
+    .hero__intro, .portfolio__intro { font-size: 17px; }
+    .custom { padding: 22px; }
+  }
+</style>

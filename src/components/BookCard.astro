@@ -1,7 +1,7 @@
 ---
 import type { CollectionEntry } from 'astro:content';
-interface Props { book: CollectionEntry<'books'> }
-const { book } = Astro.props;
+interface Props { book: CollectionEntry<'books'>; compact?: boolean }
+const { book, compact = false } = Astro.props;
 const b = book.data;
 const byline = ['by ' + b.author, b.illustrator ? 'illustrated by ' + b.illustrator : null].filter(Boolean).join(' · ');
 ---
@@ -12,7 +12,7 @@ const byline = ['by ' + b.author, b.illustrator ? 'illustrated by ' + b.illustra
   <span class="badge badge--imprint">EION IMPRINT</span>
   <h3 class="book__title">{b.title}</h3>
   {b.subtitle && <p class="book__meta">{b.subtitle}</p>}
-  <p class="book__meta">{b.description}</p>
+  {!compact && <p class="book__meta">{b.description}</p>}
   <p class="book__meta">{byline}</p>
   {b.buyUrl && <a class="book__buy" href={b.buyUrl}>{b.buyLabel} &rarr;</a>}
 </article>

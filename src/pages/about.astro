@@ -1,0 +1,134 @@
+---
+import { getEntry, getCollection, render } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import BookCard from '../components/BookCard.astro';
+import { getSettings } from '../lib/settings';
+
+const page = await getEntry('pages', 'about');
+if (!page) throw new Error('About page content is missing (src/content/pages/about.md).');
+const a = page.data;
+const { Content } = await render(page);
+const books = (await getCollection('books', ({ data }) => data.published && data.author === a.founderName))
+  .sort((x, y) => x.data.order - y.data.order);
+const { startHref } = await getSettings();
+---
+<Base title="About | EION Books" description={a.heroIntro}>
+  <section class="hero">
+    <div class="wrap hero__row">
+      <div class="hero__copy">
+        <p class="eyebrow hero__eyebrow">{a.heroEyebrow}</p>
+        <h1 class="display caps hero__title">{a.heroTitle} {a.heroAccent && <span>{a.heroAccent}</span>}</h1>
+      </div>
+      <div class="hero__note"><p>{a.heroIntro}</p></div>
+    </div>
+  </section>
+
+  <section class="wrap story">
+    <div class="story__head">
+      <p class="eyebrow story__eyebrow">OUR STORY</p>
+      <h2 class="display story__title">{a.storyHeading}</h2>
+    </div>
+    <div class="story__body reveal"><Content /></div>
+  </section>
+
+  {a.beliefs.length > 0 && (
+    <section class="beliefs">
+      <div class="wrap">
+        <p class="eyebrow beliefs__eyebrow">WHAT WE BELIEVE</p>
+        <div class="beliefs__grid">
+          {a.beliefs.map((b, i) => (
+            <div class="belief reveal">
+              <span class="belief__num display">{String(i + 1).padStart(2, '0')}</span>
+              <h3>{b.title}</h3>
+              <p>{b.text}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <section class="wrap founder">
+    <div class="founder__photo reveal"><img src={a.headshot} alt={a.headshotAlt} /></div>
+    <div class="founder__copy">
+      <p class="eyebrow founder__eyebrow">THE FOUNDER</p>
+      <h2 class="display founder__name">{a.founderName}</h2>
+      <p>{a.founderBio}</p>
+      {a.credentials && <p>{a.credentials}</p>}
+      {a.litkidsUrl
+        ? <p>Paula also founded <a href={a.litkidsUrl}>LitKids Create</a>, a separate youth storytelling program with its own home online.</p>
+        : <p>Paula also founded LitKids Create, a separate youth storytelling program with its own home online.</p>}
+      {a.authorSiteUrl && <a class="btn btn--dark" href={a.authorSiteUrl}>Paula's author website &rarr;</a>}
+    </div>
+  </section>
+
+  {books.length > 0 && (
+    <section class="wrap shelf">
+      <p class="eyebrow">BOOKS BY {a.founderName.toUpperCase()}, FROM THE EION IMPRINT</p>
+      <div class="grid">{books.slice(0, 4).map((book) => <BookCard book={book} compact />)}</div>
+      <p class="shelf__more"><a href="/our-books/">See all our books &rarr;</a></p>
+    </section>
+  )}
+
+  <section class="band">
+    <div class="wrap band__row">
+      <p class="display band__title">Let's make your book <span>next.</span></p>
+      <a href={startHref} class="btn btn--dark">Start Your Project &rarr;</a>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .hero { background: var(--aubergine); color: var(--cream); }
+  .hero__row { display: flex; flex-wrap: wrap; gap: 48px; align-items: flex-end; justify-content: space-between; padding-block: 90px 96px; }
+  .hero__copy { flex: 1 1 560px; }
+  .hero__eyebrow { color: var(--marigold); }
+  .hero__title { margin: 0; font-size: clamp(56px, 7vw, 108px); line-height: 0.86; }
+  .hero__title span { color: var(--marigold); }
+  .hero__note { flex: 0 1 420px; border-left: 3px solid var(--marigold); padding-left: 22px; }
+  .hero__note p { margin: 0; color: var(--on-dark); }
+
+  .story { display: flex; flex-wrap: wrap; gap: 56px; padding-block: 110px; }
+  .story__head { flex: 1 1 360px; }
+  .story__eyebrow { color: var(--coral); }
+  .story__title { margin: 0; font-size: 60px; }
+  .story__body { flex: 1 1 520px; font-size: 19px; color: var(--ink-soft); }
+  .story__body :global(p) { margin: 0 0 20px; }
+
+  .beliefs { background: var(--sand); padding-block: 100px; }
+  .beliefs__eyebrow { color: var(--teal); }
+  .beliefs__grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 40px; }
+  .belief { border-top: 3px solid var(--aubergine); padding-top: 22px; }
+  .belief__num { font-size: 44px; color: var(--marigold); -webkit-text-stroke: 1px var(--aubergine); }
+  .belief h3 { margin: 12px 0 8px; font-size: 22px; }
+  .belief p { margin: 0; color: var(--ink-soft); }
+
+  .founder { display: flex; flex-wrap: wrap; gap: 64px; align-items: center; padding-block: 120px; }
+  .founder__photo { flex: 1 1 420px; position: relative; }
+  .founder__photo::before { content: ""; position: absolute; inset: 18px -18px -18px 18px; background: var(--marigold); border-radius: 14px; }
+  .founder__photo img { position: relative; width: 100%; aspect-ratio: 3 / 2; object-fit: cover; object-position: center 30%; border-radius: 14px; }
+  .founder__copy { flex: 1 1 440px; min-width: 0; }
+  .founder__eyebrow { color: var(--coral); }
+  .founder__name { margin: 0 0 20px; font-size: 64px; }
+  .founder__copy p { color: var(--ink-soft); }
+  .founder__copy a:not(.btn) { font-weight: 700; }
+  .founder__copy .btn { margin-top: 12px; }
+
+  .shelf { padding-bottom: 110px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 32px; }
+  .shelf__more { margin: 36px 0 0; font-weight: 700; }
+
+  .band { background: var(--marigold); }
+  .band__row { display: flex; flex-wrap: wrap; gap: 32px; align-items: center; justify-content: space-between; padding-block: 90px; }
+  .band__title { margin: 0; font-size: 56px; line-height: 0.95; }
+  .band__title span { color: var(--teal); }
+
+  @media (max-width: 640px) {
+    .hero__row { padding-block: 56px 60px; }
+    .story, .founder { padding-block: 64px; gap: 32px; }
+    .story__title, .founder__name, .band__title { font-size: 42px; }
+    .beliefs { padding-block: 64px; }
+    .founder__photo::before { inset: 10px -10px -10px 10px; }
+    .grid { grid-template-columns: 1fr 1fr; gap: 24px 16px; }
+  }
+</style>

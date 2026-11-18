@@ -1,0 +1,28 @@
+---
+import type { CollectionEntry } from 'astro:content';
+interface Props { project: CollectionEntry<'work'> }
+const p = Astro.props.project.data;
+const studio = p.type === 'Creative Studio';
+---
+<article class="work reveal" data-type={p.type}>
+  <div class="work__shot lift">
+    <img src={p.image} alt={p.imageAlt} loading="lazy" />
+  </div>
+  <span class:list={['badge', studio ? 'badge--studio' : 'badge--client']}>
+    {studio ? 'CREATIVE STUDIO' : 'AUTHOR-PUBLISHED'}
+  </span>
+  <h3 class="work__title">{p.title}</h3>
+  <p class="work__meta">{p.service} · for {p.client}{p.bookType && ` · ${p.bookType}`}</p>
+  <p class="work__summary">{p.summary}</p>
+  {p.link && <a class="work__link" href={p.link}>{p.linkLabel} &rarr;</a>}
+</article>
+
+<style>
+  .work__shot { aspect-ratio: 4 / 3; border-radius: 10px; overflow: hidden; background: var(--sand); box-shadow: 0 18px 34px -22px rgba(42,20,51,0.45); }
+  .work__shot img { width: 100%; height: 100%; object-fit: cover; object-position: top center; }
+  .badge { margin-top: 18px; }
+  .work__title { margin: 10px 0 4px; font-size: 21px; line-height: 1.25; }
+  .work__meta { margin: 0 0 6px; font-size: 15px; color: var(--mauve); }
+  .work__summary { margin: 0 0 6px; font-size: 15px; color: var(--ink-soft); }
+  .work__link { display: inline-block; margin-top: 8px; font-weight: 700; }
+</style>

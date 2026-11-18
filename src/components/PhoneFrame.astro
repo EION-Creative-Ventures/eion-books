@@ -1,0 +1,13 @@
+---
+// A simple phone outline around a real mobile screenshot.
+interface Props { src: string; alt: string }
+const { src, alt } = Astro.props;
+---
+<figure class="pf">
+  <img src={src} alt={alt} loading="lazy" decoding="async" />
+</figure>
+
+<style>
+  .pf { margin: 0; width: 100%; border-radius: 26px; padding: 8px; background: var(--aubergine); box-shadow: 0 28px 50px -24px rgba(31,14,39,0.6); }
+  .pf img { width: 100%; aspect-ratio: 9 / 18; object-fit: cover; object-position: top center; border-radius: 19px; background: var(--paper); }
+</style>

@@ -1,5 +1,12 @@
 ---
-// Shared site footer (Bold Spine)
+// Shared site footer (Bold Spine). Text and links come from Site settings in the dashboard.
+import { getSettings } from '../lib/settings';
+const s = await getSettings();
+const social = [
+  { label: 'Instagram', href: s.instagramUrl },
+  { label: 'LinkedIn', href: s.linkedinUrl },
+  { label: 'Facebook', href: s.facebookUrl },
+].filter((l) => l.href);
 ---
 <footer class="footer">
   <div class="footer__stripe" aria-hidden="true">
@@ -8,13 +15,13 @@
   <div class="wrap footer__row">
     <div class="footer__brand">
       <p class="display footer__name">EION BOOKS</p>
-      <p class="footer__line">Professional publishing. Author-owned.</p>
-      <p class="footer__blurb">Publishing services and creative design for independent authors. Your book, your accounts, your royalties.</p>
+      {s.footerTagline && <p class="footer__line">{s.footerTagline}</p>}
+      {s.footerBlurb && <p class="footer__blurb">{s.footerBlurb}</p>}
     </div>
     <nav aria-label="Footer" class="footer__nav">
-      <div><span>SERVICES</span><a href="#">Publishing Services</a><a href="#">Creative Studio</a><a href="#">Start Your Project</a></div>
-      <div><span>BOOKS</span><a href="/our-books/">Our Books</a><a href="#">Our Work</a><a href="#">About</a></div>
-      <div><span>CONNECT</span><a href="#">Instagram</a><a href="#">LinkedIn</a><a href="#">Privacy Policy</a></div>
+      <div><span>SERVICES</span><a href="#">Publishing Services</a><a href="/creative-studio/">Creative Studio</a><a href={s.startHref}>Start Your Project</a></div>
+      <div><span>BOOKS</span><a href="/our-books/">Our Books</a><a href="/our-work/">Our Work</a><a href="/about/">About</a></div>
+      {(s.contactEmail || social.length > 0 || s.privacyUrl) && <div><span>CONNECT</span>{s.contactEmail && <a href={`mailto:${s.contactEmail}`}>{s.contactEmail}</a>}{social.map((l) => <a href={l.href}>{l.label}</a>)}{s.privacyUrl && <a href={s.privacyUrl}>Privacy Policy</a>}</div>}
     </nav>
   </div>
   <div class="wrap footer__legal">&copy; EION Books, a brand of EION Creative Ventures, LLC</div>

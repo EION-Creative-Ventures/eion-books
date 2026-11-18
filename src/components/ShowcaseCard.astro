@@ -1,0 +1,33 @@
+---
+// A website project card in the Creative Studio gallery.
+import type { CollectionEntry } from 'astro:content';
+import BrowserFrame from './BrowserFrame.astro';
+import PhoneFrame from './PhoneFrame.astro';
+interface Props { project: CollectionEntry<'work'> }
+const p = Astro.props.project.data;
+---
+<article class="sc reveal">
+  <div class="sc__media">
+    <BrowserFrame src={p.image} alt={p.imageAlt} />
+    {p.mobileImage && <div class="sc__phone"><PhoneFrame src={p.mobileImage} alt={p.mobileImageAlt || p.title + ' on a phone'} /></div>}
+  </div>
+  {p.category && <span class="badge badge--studio">{p.category.toUpperCase()}</span>}
+  <h3 class="sc__title">{p.title}</h3>
+  <p class="sc__summary">{p.summary}</p>
+  {p.description && <p class="sc__desc">{p.description}</p>}
+  {p.features.length > 0 && <ul class="sc__chips">{p.features.map((f) => <li>{f}</li>)}</ul>}
+  {p.link && <a class="sc__link" href={p.link} target="_blank" rel="noopener">{p.linkLabel} <span aria-hidden="true">&#8599;</span><span class="sr-only"> (opens in a new tab)</span></a>}
+</article>
+
+<style>
+  .sc { display: flex; flex-direction: column; }
+  .sc__media { position: relative; padding: 0 22px 36px 0; margin-bottom: 26px; }
+  .sc__phone { position: absolute; right: 0; bottom: 0; width: 26%; }
+  .sc .badge { align-self: flex-start; }
+  .sc__title { margin: 16px 0 12px; font-size: 28px; line-height: 1.2; }
+  .sc__summary { margin: 0 0 14px; font-size: 17px; line-height: 1.65; color: var(--ink-soft); }
+  .sc__desc { margin: 0 0 14px; font-size: 15px; color: var(--mauve); }
+  .sc__chips { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; margin: 4px 0 22px; padding: 0; }
+  .sc__chips li { font-size: 14px; font-weight: 600; padding: 4px 10px; border-radius: 999px; background: var(--sand); }
+  .sc__link { margin-top: auto; font-weight: 700; }
+</style>

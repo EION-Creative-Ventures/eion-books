@@ -1,0 +1,71 @@
+---
+// A large featured website project on the Creative Studio page.
+import type { CollectionEntry } from 'astro:content';
+import BrowserFrame from './BrowserFrame.astro';
+import PhoneFrame from './PhoneFrame.astro';
+interface Props { project: CollectionEntry<'work'>; flip?: boolean; lead?: boolean }
+const { project, flip = false, lead = false } = Astro.props;
+const p = project.data;
+---
+<article class:list={['sf reveal', { 'sf--flip': flip, 'sf--lead': lead }]}>
+  <div class="sf__media">
+    <BrowserFrame src={p.image} alt={p.imageAlt} />
+    {p.mobileImage && <div class="sf__phone"><PhoneFrame src={p.mobileImage} alt={p.mobileImageAlt || p.title + ' on a phone'} /></div>}
+  </div>
+  <div class="sf__copy">
+    {p.category && <span class="badge badge--studio">{p.category.toUpperCase()}</span>}
+    <h3 class="display sf__title">{p.title}</h3>
+    <p class="sf__lede">{p.summary}</p>
+    {p.description && <p class="sf__desc">{p.description}</p>}
+    {p.features.length > 0 && (
+      <>
+        <p class="sf__label">WHAT WE BUILT</p>
+        <ul class="sf__features">{p.features.map((f) => <li>{f}</li>)}</ul>
+      </>
+    )}
+    {p.link && <a class="btn btn--dark" style={`grid-row:${p.description ? 6 : 5}`} href={p.link} target="_blank" rel="noopener">{p.linkLabel} <span aria-hidden="true">&#8599;</span><span class="sr-only"> (opens in a new tab)</span></a>}
+  </div>
+  {p.gallery.length > 0 && (
+    <div class="sf__gallery">
+      {p.gallery.map((g) => g.view === 'Mobile'
+        ? <div class="sf__g sf__g--mobile"><PhoneFrame src={g.image} alt={g.alt} /></div>
+        : <div class="sf__g"><BrowserFrame src={g.image} alt={g.alt} /></div>)}
+    </div>
+  )}
+</article>
+
+<style>
+  .sf { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 26px 64px; padding-block: 72px; border-top: 1px solid var(--line); }
+  .sf__media { grid-column: 1 / -1; grid-row: 1; position: relative; padding: 0 64px 56px 0; margin-bottom: 20px; }
+  .sf--flip .sf__media { padding: 0 0 56px 64px; }
+  .sf__phone { position: absolute; width: 19%; max-width: 230px; right: 0; bottom: 0; }
+  .sf--flip .sf__phone { right: auto; left: 0; }
+  .sf__copy { display: contents; }
+  .sf__copy > .badge { grid-column: 1; grid-row: 2; }
+  .sf__title { grid-column: 1; grid-row: 3; }
+  .sf__lede { grid-column: 1; grid-row: 4; }
+  .sf__desc { grid-column: 1; grid-row: 5; }
+  .sf__title { margin: 6px 0 0; font-size: clamp(44px, 5vw, 72px); }
+  .sf__lede { margin: 0; font-size: 21px; font-weight: 500; line-height: 1.5; }
+  .sf__desc { margin: 0; color: var(--ink-soft); }
+  .badge { justify-self: start; }
+  .sf__label, .sf__features { grid-column: 2; }
+  .sf__label { grid-row: 2; align-self: center; margin: 0; font-size: 12px; font-weight: 700; letter-spacing: 0.18em; color: var(--teal); }
+  .sf__features { grid-row: 3 / span 4; list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 10px 22px; align-content: start; font-size: 16px; }
+  .sf__copy > .btn { grid-column: 1; justify-self: start; align-self: start; margin-top: 10px; }
+  .sf__features li { position: relative; padding-left: 22px; }
+  .sf__features li::before { content: ""; position: absolute; left: 0; top: 0.45em; width: 11px; height: 11px; background: var(--marigold); border: 2px solid var(--aubergine); border-radius: 2px; }
+  .sf__gallery { grid-column: 1 / -1; grid-row: 7; display: grid; grid-template-columns: 1fr 230px; gap: 40px; align-items: end; margin-top: 24px; }
+  .sf--lead { background: var(--sand); border: 0; border-radius: 18px; padding: 56px; margin-top: 8px; }
+  @media (max-width: 960px) {
+    .sf, .sf--lead { grid-template-columns: 1fr; gap: 18px; }
+    .sf--lead { padding: 26px 20px 32px; }
+    .sf__media, .sf--flip .sf__media { padding: 0 0 36px 0; margin-bottom: 12px; }
+    .sf__phone, .sf--flip .sf__phone { width: 30%; right: -4px; left: auto; }
+    .sf__media, .sf__copy > *, .sf__label, .sf__features, .sf__copy > .btn, .sf__gallery, .sf__title, .sf__lede, .sf__desc { grid-column: 1; grid-row: auto; }
+    .sf__label { margin-top: 10px; }
+    .sf__features { grid-template-columns: 1fr; }
+    .sf__copy > .btn { margin-top: 8px; grid-row: auto !important; }
+    .sf__gallery { grid-template-columns: 1fr 34%; gap: 14px; }
+  }
+</style>

@@ -1,0 +1,19 @@
+---
+// A simple browser window around a real website screenshot.
+interface Props { src: string; alt: string; eager?: boolean; dark?: boolean }
+const { src, alt, eager = false, dark = false } = Astro.props;
+---
+<figure class:list={['bf', { 'bf--dark': dark }]}>
+  <div class="bf__bar" aria-hidden="true"><span></span><span></span><span></span></div>
+  <img src={src} alt={alt} loading={eager ? 'eager' : 'lazy'} decoding="async" />
+</figure>
+
+<style>
+  .bf { margin: 0; border-radius: 12px; overflow: hidden; background: var(--paper); border: 2px solid var(--aubergine); box-shadow: 0 30px 60px -32px rgba(31,14,39,0.55); }
+  .bf__bar { display: flex; gap: 6px; padding: 10px 14px; background: var(--aubergine); }
+  .bf__bar span { width: 9px; height: 9px; border-radius: 50%; background: var(--marigold); }
+  .bf__bar span:nth-child(2) { background: var(--coral); }
+  .bf__bar span:nth-child(3) { background: var(--cream); }
+  .bf img { width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; object-position: top center; }
+  .bf--dark { border-color: var(--cream); }
+</style>
