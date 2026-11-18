@@ -1,6 +1,7 @@
 ---
 title: The Stars That Shine for Mama
 author: Rochelle McMorris
+illustrator: Sangi Parvin
 category: Children's book
 cover: /uploads/books/the-stars-that-shine-for-mama.jpg
 coverAlt: The Stars That Shine for Mama book cover
