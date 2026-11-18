@@ -13,5 +13,7 @@ buyUrl: https://payhip.com/b/4HWD9
 featured: false
 order: 30
 homeFeatured: false
+showOnPublishing: false
+projectLabel: Publishing & Production
 published: true
 ---

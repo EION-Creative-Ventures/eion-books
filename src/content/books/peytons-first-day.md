@@ -12,5 +12,7 @@ buyUrl: https://peytonsjourney.com/shop/ols/products/peytons-first-day-at-a-new-
 featured: false
 order: 3
 homeFeatured: false
+showOnPublishing: false
+projectLabel: EION Books Original
 published: true
 ---

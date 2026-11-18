@@ -1,5 +1,5 @@
 ---
-import { getCollection } from 'astro:content';
+import { getCollection, getEntry } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import BookCard from '../components/BookCard.astro';
 import { getBookAuthorLinks } from '../lib/authors';
@@ -11,16 +11,20 @@ const featured = all.find((b) => b.data.featured);
 const rest = all.filter((b) => b !== featured);
 const categories = [...new Set(rest.map((b) => b.data.category))];
 const authorLinks = await getBookAuthorLinks();
+const pageEntry = await getEntry('ourBooks', 'our-books');
+if (!pageEntry) throw new Error('Our Books page content is missing (src/content/pages/our-books.yaml).');
+const t = pageEntry.data;
 ---
-<Base title="Our Books | EION Books" description="Books published under the EION Books imprint.">
+<Base title="Our Books | EION Books" description="Books EION Books has written, published, or helped produce.">
   <section class="hero">
     <div class="wrap hero__row">
       <div class="hero__copy">
-        <p class="eyebrow hero__eyebrow">OUR BOOKS</p>
-        <h1 class="display caps hero__title">Published by <span>EION Books.</span></h1>
+        <p class="eyebrow hero__eyebrow">{t.heroEyebrow}</p>
+        <h1 class="display caps hero__title">{t.heroTitle} {t.heroAccent && <span>{t.heroAccent}</span>}</h1>
       </div>
       <div class="hero__note">
-        <p>These titles carry the EION Books imprint. <a href="/meet-our-authors/">Meet the authors</a> behind them, or see <a href="/our-work/">Our Work</a> for projects we've supported.</p>
+        {t.intro.map((para) => <p>{para}</p>)}
+        <p class="hero__links"><a href="/meet-our-authors/">Meet the authors</a> · <a href="/our-work/">See Our Work</a></p>
       </div>
     </div>
   </section>
@@ -30,7 +34,7 @@ const authorLinks = await getBookAuthorLinks();
       <article class="feature reveal">
         <div class="feature__cover"><img class="lift" src={featured.data.cover} alt={featured.data.coverAlt} /></div>
         <div class="feature__copy">
-          <span class="badge badge--imprint">EION IMPRINT · {featured.data.category.toUpperCase()}</span>
+          <span class="badge badge--imprint">{featured.data.projectLabel ? `${featured.data.projectLabel.toUpperCase()} · ` : ''}{featured.data.category.toUpperCase()}</span>
           <h2 class="display feature__title">{featured.data.title}</h2>
           {featured.data.subtitle && <p class="feature__subtitle">{featured.data.subtitle}</p>}
           <p class="feature__meta">by {authorLinks.get(featured.id) ? <a href={authorLinks.get(featured.id)!.href}>{featured.data.author}</a> : featured.data.author}</p>
@@ -44,8 +48,8 @@ const authorLinks = await getBookAuthorLinks();
   <section class="wrap shelf">
     <div class="shelf__head">
       <div>
-        <p class="shelf__kicker">EVERY TITLE FROM THE EION BOOKS IMPRINT</p>
-        <h2 class="display shelf__title">The shelf</h2>
+        <p class="shelf__kicker">{t.shelfEyebrow}</p>
+        <h2 class="display shelf__title">{t.shelfTitle}</h2>
       </div>
       <div class="filters" role="group" aria-label="Filter books">
         <button type="button" class="filter is-active" data-filter="all" aria-pressed="true">All</button>
@@ -62,10 +66,10 @@ const authorLinks = await getBookAuthorLinks();
   <section class="band">
     <div class="wrap band__row">
       <div>
-        <p class="display band__title">We publish on the same platforms you'll use.</p>
-        <p class="band__sub">Bring that experience to your own book.</p>
+        <p class="display band__title">{t.bandTitle}</p>
+        {t.bandText && <p class="band__sub">{t.bandText}</p>}
       </div>
-      <a href={publishingHref} class="btn btn--dark">Explore Publishing Services &rarr;</a>
+      <a href={publishingHref} class="btn btn--dark">{t.bandButton} &rarr;</a>
     </div>
   </section>
 </Base>
@@ -88,7 +92,8 @@ const authorLinks = await getBookAuthorLinks();
   .hero__title { margin: 0; font-size: clamp(56px, 7vw, 108px); line-height: 0.86; }
   .hero__title span { color: var(--marigold); }
   .hero__note { flex: 0 1 420px; border-left: 3px solid var(--marigold); padding-left: 22px; }
-  .hero__note p { margin: 0; color: var(--on-dark); }
+  .hero__note p { margin: 0 0 12px; color: var(--on-dark); }
+  .hero__links { font-weight: 700; margin-bottom: 0 !important; }
   .hero__note a { color: var(--marigold); font-weight: 700; }
 
   .feature-wrap { padding-block: 110px 90px; }

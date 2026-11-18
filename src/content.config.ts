@@ -22,6 +22,8 @@ const books = defineCollection({
     order: z.number().default(100),
     homeFeatured: z.boolean().default(false),
     homeOrder: z.number().default(100),
+    showOnPublishing: z.boolean().default(false),
+    projectLabel: z.enum(['', 'EION Books Original', 'Publishing & Production', 'Formatting & Layout', 'Formatting & Design']).optional().default(''),
     published: z.boolean().default(true),
   }),
 });
@@ -240,4 +242,38 @@ const home = defineCollection({
   }),
 });
 
-export const collections = { books, work, testimonials, pages, settings, studio, authors, youngAuthors, home };
+// The Publishing Services page (one file).
+const publishing = defineCollection({
+  loader: glob({ pattern: 'publishing-services.yaml', base: './src/content/pages' }),
+  schema: z.object({
+    heroEyebrow: z.string(), heroTitle: z.string(), heroAccent: opt, heroIntro: z.string(), heroButton: z.string(),
+    modelEyebrow: z.string(), modelHeading: z.string(), modelText: z.string(),
+    youKeepLabel: z.string(), weProvideLabel: z.string(),
+    youKeep: z.array(z.string()).default([]),
+    weProvide: z.array(z.string()).default([]),
+    modelNote: opt,
+    phasesEyebrow: z.string(), phasesHeading: z.string(),
+    phases: z.array(z.object({ title: z.string(), items: z.array(z.string()).default([]) })).default([]),
+    phasesNote: opt,
+    waysEyebrow: z.string(), waysHeading: z.string(),
+    ways: z.array(z.object({ title: z.string(), text: z.string(), linkText: z.string(), highlight: opt })).default([]),
+    waysNote: opt,
+    booksEyebrow: z.string(), booksHeading: z.string(), booksText: opt, booksLinkText: opt,
+    faqEyebrow: z.string(), faqHeading: z.string(),
+    faqs: z.array(z.object({ question: z.string(), answer: z.string() })).default([]),
+    closingHeading: z.string(), closingButton: z.string(),
+  }),
+});
+
+// The Our Books page text (one file).
+const ourBooks = defineCollection({
+  loader: glob({ pattern: 'our-books.yaml', base: './src/content/pages' }),
+  schema: z.object({
+    heroEyebrow: z.string(), heroTitle: z.string(), heroAccent: opt,
+    intro: z.array(z.string()).default([]),
+    shelfEyebrow: z.string(), shelfTitle: z.string(),
+    bandTitle: z.string(), bandText: opt, bandButton: z.string(),
+  }),
+});
+
+export const collections = { books, work, testimonials, pages, settings, studio, authors, youngAuthors, home, publishing, ourBooks };

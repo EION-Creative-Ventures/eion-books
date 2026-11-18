@@ -12,5 +12,7 @@ featured: false
 order: 22
 homeFeatured: true
 homeOrder: 6
+showOnPublishing: true
+projectLabel: Formatting & Design
 published: true
 ---

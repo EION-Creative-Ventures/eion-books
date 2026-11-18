@@ -14,5 +14,7 @@ featured: false
 order: 2
 homeFeatured: true
 homeOrder: 2
+showOnPublishing: false
+projectLabel: EION Books Original
 published: true
 ---

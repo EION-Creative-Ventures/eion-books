@@ -11,5 +11,7 @@ featured: false
 order: 20
 homeFeatured: true
 homeOrder: 4
+showOnPublishing: true
+projectLabel: Publishing & Production
 published: true
 ---

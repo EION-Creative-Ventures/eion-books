@@ -38,7 +38,7 @@ const isPublishingLink = (href: string) => href === publishingHref;
         </div>
       </div>
       {heroBooks.length > 0 && (
-        <div class="hero__shelf" aria-label="Books from the EION imprint">
+        <div class="hero__shelf" aria-label="Books from EION Books">
           <div class="hero__books">
             {heroBooks[0] && <img class="hb hb--1 lift" src={heroBooks[0].data.cover} alt={heroBooks[0].data.coverAlt} />}
             {heroBooks[1] && <img class="hb hb--2 lift" src={heroBooks[1].data.cover} alt={heroBooks[1].data.coverAlt} />}
@@ -105,7 +105,7 @@ const isPublishingLink = (href: string) => href === publishingHref;
             return (
               <article class="hbook reveal">
                 <a class="hbook__frame lift" href="/our-books/"><img src={b.data.cover} alt={b.data.coverAlt} loading="lazy" /></a>
-                <span class="badge badge--imprint">EION IMPRINT</span>
+                {b.data.projectLabel && <span class="badge badge--imprint">{b.data.projectLabel.toUpperCase()}</span>}
                 <h3>{b.data.title}</h3>
                 <p>{b.data.category} · {al ? <a href={al.href}>{b.data.author}</a> : b.data.author}</p>
               </article>

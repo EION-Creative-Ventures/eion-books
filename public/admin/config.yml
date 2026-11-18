@@ -84,6 +84,13 @@ collections:
         hint: Turn this on for one book only.
       - { label: Display order, name: order, widget: number, value_type: int, default: 100, hint: "Lower numbers appear first." }
       - { label: Show on the home page shelf, name: homeFeatured, widget: boolean, required: false, default: false, hint: "The first three also appear in the home page hero." }
+      - { label: Show on Publishing Services, name: showOnPublishing, widget: boolean, required: false, default: false, hint: "Features this book in 'Books we've helped bring to life' on Publishing Services (up to three, in Display order)." }
+      - label: Project label
+        name: projectLabel
+        widget: select
+        required: false
+        options: [EION Books Original, "Publishing & Production", "Formatting & Layout", "Formatting & Design"]
+        hint: Optional. Only choose a label when EION Books' role on this book is confirmed. Leave blank if unsure.
       - { label: Home page shelf order, name: homeOrder, widget: number, value_type: int, default: 100, hint: "Lower numbers appear first on the home page." }
       - { label: Show on website, name: published, widget: boolean, required: false, default: true, hint: "Turn off to hide this book without deleting it." }
 
@@ -284,6 +291,76 @@ collections:
     media_folder: /public/uploads/about
     public_folder: /uploads/about
     files:
+      - name: our-books
+        label: Our Books page
+        file: src/content/pages/our-books.yaml
+        format: yml
+        fields:
+          - { label: "Hero: small heading", name: heroEyebrow, widget: string }
+          - { label: "Hero: headline", name: heroTitle, widget: string }
+          - { label: "Hero: headline (gold part)", name: heroAccent, widget: string, required: false }
+          - { label: "Introduction paragraphs", name: intro, widget: list, field: { label: Paragraph, name: paragraph, widget: text } }
+          - { label: "Shelf: small heading", name: shelfEyebrow, widget: string }
+          - { label: "Shelf: heading", name: shelfTitle, widget: string }
+          - { label: "Closing band: heading", name: bandTitle, widget: string }
+          - { label: "Closing band: text", name: bandText, widget: string, required: false }
+          - { label: "Closing band: button", name: bandButton, widget: string }
+      - name: publishing-services
+        label: Publishing Services page
+        file: src/content/pages/publishing-services.yaml
+        format: yml
+        fields:
+          - { label: "Hero: small heading", name: heroEyebrow, widget: string }
+          - { label: "Hero: headline", name: heroTitle, widget: string }
+          - { label: "Hero: headline (gold part)", name: heroAccent, widget: string, required: false }
+          - { label: "Hero: intro", name: heroIntro, widget: text }
+          - { label: "Hero: button", name: heroButton, widget: string }
+          - { label: "Model: small heading", name: modelEyebrow, widget: string }
+          - { label: "Model: heading", name: modelHeading, widget: string }
+          - { label: "Model: text", name: modelText, widget: text, hint: "Describe the standard author-owned model. Don't offer the EION Books imprint as a client package." }
+          - { label: "Table: left column title", name: youKeepLabel, widget: string }
+          - { label: "Table: right column title", name: weProvideLabel, widget: string }
+          - { label: "Table: You keep", name: youKeep, widget: list, field: { label: Item, name: item, widget: string } }
+          - { label: "Table: EION Books provides", name: weProvide, widget: list, field: { label: Item, name: item, widget: string } }
+          - { label: "Table: note", name: modelNote, widget: string, required: false, hint: "Example: Services depend on your selected package or individual service agreement." }
+          - { label: "Phases: small heading", name: phasesEyebrow, widget: string }
+          - { label: "Phases: heading", name: phasesHeading, widget: string }
+          - label: "Phases"
+            name: phases
+            widget: list
+            summary: "{{fields.title}}"
+            fields:
+              - { label: Phase name, name: title, widget: string }
+              - { label: Services, name: items, widget: list, field: { label: Service, name: item, widget: string } }
+          - { label: "Phases: note", name: phasesNote, widget: string, required: false }
+          - { label: "Ways to work: small heading", name: waysEyebrow, widget: string }
+          - { label: "Ways to work: heading", name: waysHeading, widget: string }
+          - label: "Ways to work: cards"
+            name: ways
+            widget: list
+            summary: "{{fields.title}}"
+            hint: Do not add prices until packages are final.
+            fields:
+              - { label: Title, name: title, widget: string }
+              - { label: Text, name: text, widget: text }
+              - { label: Link text, name: linkText, widget: string }
+              - { label: Highlight label, name: highlight, widget: string, required: false, hint: "Optional, for example: MOST COMPLETE. Fills the card in gold." }
+          - { label: "Ways to work: note", name: waysNote, widget: string, required: false }
+          - { label: "Books section: small heading", name: booksEyebrow, widget: string }
+          - { label: "Books section: heading", name: booksHeading, widget: string, hint: "Shows up to three books with 'Show on Publishing Services' on, in Display order." }
+          - { label: "Books section: text", name: booksText, widget: text, required: false }
+          - { label: "Books section: link text", name: booksLinkText, widget: string, required: false }
+          - { label: "Questions: small heading", name: faqEyebrow, widget: string }
+          - { label: "Questions: heading", name: faqHeading, widget: string }
+          - label: "Questions and answers"
+            name: faqs
+            widget: list
+            summary: "{{fields.question}}"
+            fields:
+              - { label: Question, name: question, widget: string }
+              - { label: Answer, name: answer, widget: text }
+          - { label: "Closing: heading", name: closingHeading, widget: string }
+          - { label: "Closing: button", name: closingButton, widget: string }
       - name: home
         label: Home page
         file: src/content/pages/home.yaml

@@ -2,6 +2,7 @@
 import { getCollection, getEntry } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import { getSettings } from '../lib/settings';
+import { publishingHref } from '../lib/links';
 
 const authors = (await getCollection('authors', ({ data }) => data.published)).sort((a, b) => a.data.order - b.data.order);
 const books = await getCollection('books');
@@ -23,7 +24,7 @@ const links = (a: (typeof authors)[number]['data']) => [
   { label: a.otherLinkLabel || 'More', href: a.otherLinkUrl },
 ].filter((l) => l.href);
 ---
-<Base title="Meet Our Authors | EION Books" description="The authors published under the EION Books imprint, including the young authors of I Got a Story to Tell.">
+<Base title="Meet Our Authors | EION Books" description="The authors behind books EION Books has helped bring to life, including the young authors of I Got a Story to Tell.">
   <section class="hero">
     <div class="wrap hero__row">
       <div>
@@ -31,7 +32,7 @@ const links = (a: (typeof authors)[number]['data']) => [
         <h1 class="display caps hero__title">The people behind <span>our books.</span></h1>
       </div>
       <div class="hero__note">
-        <p>Every author here is published under the EION Books imprint, from first-time picture book authors to the young writers of <em>I Got a Story to Tell</em>.</p>
+        <p>Meet the authors behind books we've helped bring to life, from first-time picture book authors to the young writers of <em>I Got a Story to Tell</em>.</p>
         <p class="hero__jump"><a href="#published">Published authors</a> · <a href="#young-authors">Young authors</a></p>
       </div>
     </div>
@@ -81,7 +82,7 @@ const links = (a: (typeof authors)[number]['data']) => [
           <p class="eyebrow young__eyebrow">OUR YOUNG AUTHORS</p>
           <h2 class="display young__title">{v.book ? v.book.data.title : 'Our young authors'}</h2>
           {v.book?.data.subtitle && <p class="young__sub">{v.book.data.subtitle}</p>}
-          <p class="young__text">{v.names.length} young authors, published under the EION Books imprint. Every name on this shelf belongs to a published author.</p>
+          <p class="young__text">{v.names.length} young authors, each one published in this anthology. Every name on this shelf belongs to a published author.</p>
           {v.book && (
             <div class="young__book">
               <img src={v.book.data.cover} alt={v.book.data.coverAlt} loading="lazy" />
@@ -105,8 +106,8 @@ const links = (a: (typeof authors)[number]['data']) => [
 
   <section class="band">
     <div class="wrap band__row">
-      <p class="display band__title">Your book could be <span>next.</span></p>
-      <a href={startHref} class="btn btn--dark">Start Your Project &rarr;</a>
+      <p class="display band__title">Publishing your <span>own book?</span></p>
+      <a href={publishingHref} class="btn btn--dark">Explore Publishing Services &rarr;</a>
     </div>
   </section>
 </Base>

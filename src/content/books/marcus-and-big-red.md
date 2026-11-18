@@ -12,5 +12,7 @@ featured: false
 order: 5
 homeFeatured: true
 homeOrder: 3
+showOnPublishing: false
+projectLabel: EION Books Original
 published: true
 ---

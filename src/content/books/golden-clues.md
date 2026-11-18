@@ -12,5 +12,7 @@ buyUrl: https://peytonsjourney.com/shop/ols/products/the-secret-of-the-golden-cl
 featured: false
 order: 4
 homeFeatured: false
+showOnPublishing: false
+projectLabel: EION Books Original
 published: true
 ---

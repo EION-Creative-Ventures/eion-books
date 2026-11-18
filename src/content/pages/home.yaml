@@ -4,7 +4,7 @@ heroAccent: Our expertise.
 heroIntro: EION Books gives independent authors professional publishing support, from first plan to launch day, while your book, your accounts, and your royalties stay yours.
 heroButton: Start Your Project
 heroSecondButton: See how it works
-shelfCaption: "ON THE SHELF: BOOKS FROM THE EION IMPRINT"
+shelfCaption: "ON THE SHELF: BOOKS WE'VE HELPED BRING TO LIFE"
 
 ownership:
   - title: Your rights.
@@ -12,7 +12,7 @@ ownership:
   - title: Your accounts.
     text: You publish through your own Amazon KDP, IngramSpark, or other accounts. We set them up with you.
   - title: Your royalties.
-    text: Platforms pay you directly. EION charges for the work we do, never a share of your sales.
+    text: Platforms pay you directly. EION Books charges for the services we provide, not a percentage of your royalties.
 
 servicesEyebrow: TWO WAYS TO WORK WITH US
 servicesHeading: Publishing support and creative design, under one roof.
@@ -23,7 +23,7 @@ publishingCard:
   items:
     - Consultations and project planning
     - Editing, illustration, and layout coordination
-    - KDP and IngramSpark setup, in your accounts
+    - KDP and IngramSpark setup assistance, in your accounts
   linkText: Explore Publishing Services
 studioCard:
   eyebrow: EION CREATIVE STUDIO
@@ -43,7 +43,7 @@ founderLinkText: The EION story
 founderPhoto: /uploads/about/paula-banks.jpg
 founderPhotoAlt: Paula Banks, founder of EION Books
 
-booksEyebrow: PUBLISHED BY EION BOOKS
+booksEyebrow: BOOKS WE'VE HELPED BRING TO LIFE
 booksHeading: We publish too, on the same platforms you'll use.
 booksLinkText: Browse Our Books
 authorsLinkText: Meet Our Authors
@@ -62,7 +62,7 @@ steps:
   - title: Produce
     text: We coordinate editing, illustration, layout, and cover so every file is ready for print.
   - title: Publish & Launch
-    text: We set up your book in your own KDP or IngramSpark account and help you prepare to launch.
+    text: We help you set up your book in your own KDP or IngramSpark account and prepare for launch.
 
 whoEyebrow: WHO WE WORK WITH
 whoText: We work with independent authors creating children's books, journals, devotionals, memoirs, and nonfiction. Have a different kind of project? We'd love to hear about it.

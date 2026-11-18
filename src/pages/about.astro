@@ -64,7 +64,7 @@ const { startHref } = await getSettings();
 
   {books.length > 0 && (
     <section class="wrap shelf">
-      <p class="eyebrow">BOOKS BY {a.founderName.toUpperCase()}, FROM THE EION IMPRINT</p>
+      <p class="eyebrow">BOOKS BY {a.founderName.toUpperCase()}</p>
       <div class="grid">{books.slice(0, 4).map((book) => <BookCard book={book} compact />)}</div>
       <p class="shelf__more"><a href="/our-books/">See all our books &rarr;</a> &nbsp;·&nbsp; <a href="/meet-our-authors/#paula-banks">Paula's author profile &rarr;</a></p>
     </section>

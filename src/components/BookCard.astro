@@ -9,7 +9,7 @@ const illus = b.illustrator ? ' · illustrated by ' + b.illustrator : '';
   <div class="book__frame lift">
     <img src={b.cover} alt={b.coverAlt} loading="lazy" />
   </div>
-  <span class="badge badge--imprint">EION IMPRINT</span>
+  {b.projectLabel && <span class="badge badge--imprint">{b.projectLabel.toUpperCase()}</span>}
   <h3 class="book__title">{b.title}</h3>
   {b.subtitle && <p class="book__meta">{b.subtitle}</p>}
   {!compact && b.description && <p class="book__meta">{b.description}</p>}

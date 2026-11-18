@@ -1,0 +1,81 @@
+heroEyebrow: EION BOOKS · PUBLISHING SERVICES
+heroTitle: Your story.
+heroAccent: Our expertise.
+heroIntro: From your first manuscript to your finished book, EION Books provides the professional guidance and publishing support to help bring your vision to life. You stay in control of your work, your publishing decisions, and your royalties.
+heroButton: Start Your Project
+
+modelEyebrow: HOW OUR MODEL WORKS
+modelHeading: Your book stays yours. We do the work.
+modelText: You publish independently through your own Amazon KDP and IngramSpark accounts. You keep the copyright to your work, and your royalties are paid directly to you by the platforms. EION Books is paid for the services we provide, not through a percentage of your royalties.
+youKeepLabel: You keep
+weProvideLabel: EION Books provides
+youKeep:
+  - Copyright ownership of your original work
+  - Creative control and final approval
+  - Your publishing accounts
+  - Royalties paid directly to you
+  - Control over your publishing decisions
+weProvide:
+  - Professional publishing guidance
+  - Editing and illustration coordination, when included in your project
+  - Interior formatting and book production
+  - Cover preparation and print-ready files
+  - ISBN and distribution guidance
+  - Publishing setup and upload assistance
+modelNote: Services depend on your selected package or individual service agreement.
+
+phasesEyebrow: SERVICES BY PHASE
+phasesHeading: Wherever you are in your publishing journey, we'll help you with the next step.
+phases:
+  - title: Plan
+    items: [Publishing consultations, Project planning, ISBN guidance, Distribution options, Production planning]
+  - title: Prepare
+    items: [Manuscript preparation, Editing coordination, Illustration coordination, Project organization]
+  - title: Produce
+    items: [Interior formatting, Page layout, Cover preparation, Print-ready publishing files]
+  - title: Publish & Launch
+    items: [Amazon KDP and IngramSpark setup assistance, Publishing file uploads, Agreed launch support]
+phasesNote: Services are provided according to your selected package or individual service agreement. Start with the phase you need, or work with us from first plan to launch.
+
+waysEyebrow: WAYS TO WORK WITH US
+waysHeading: One service or the whole journey.
+ways:
+  - title: Single services
+    text: For authors who need assistance with a specific part of the publishing process, such as interior formatting, cover preparation, publishing files, or platform setup assistance.
+    linkText: Ask about a service
+    highlight: ""
+  - title: The EION Signature Publishing Experience
+    text: Our featured comprehensive publishing service, for authors who want coordinated professional support throughout the publishing process. "Signature" describes the level of service. Your book is still published independently, under your own name and accounts.
+    linkText: Start the conversation
+    highlight: MOST COMPLETE
+  - title: Publishing consultation
+    text: For authors seeking professional guidance, publishing direction, or help understanding their options and next steps.
+    linkText: Book a consultation
+    highlight: ""
+waysNote: Every project is quoted after we learn about your book.
+
+booksEyebrow: OUR PUBLISHING EXPERIENCE
+booksHeading: Books we've helped bring to life
+booksText: Take a look at some of the stories and projects we've helped bring from manuscript to finished book.
+booksLinkText: View the complete collection
+
+faqEyebrow: QUESTIONS AUTHORS ASK
+faqHeading: Good questions. Straight answers.
+faqs:
+  - question: Who owns my book?
+    answer: You do. You keep copyright ownership and creative control of your original work.
+  - question: Who receives the royalties?
+    answer: You do, directly through your own publishing accounts. EION Books does not take a percentage of royalties under our standard publishing services.
+  - question: Do I need my own Amazon KDP or IngramSpark account?
+    answer: Yes. Your publishing accounts stay yours, and we provide setup and publishing assistance according to the services you choose.
+  - question: Who provides the ISBN?
+    answer: You can purchase your own ISBN or choose an eligible platform-provided ISBN. We'll guide you based on your publishing and distribution goals.
+  - question: What should I know about ISBNs?
+    answer: In the United States, you can buy your own ISBNs from Bowker. An ISBN you own can show your own publishing imprint and gives you more independence across platforms. Some platforms offer free ISBNs for eligible formats, but these usually come with restrictions and can't simply be moved to another platform. Different formats and editions, like a paperback and a hardcover, may each need their own ISBN. As part of your contracted services, we can guide you through choosing, purchasing, assigning, and setting up your ISBNs.
+  - question: Can EION Books help with just one part of my project?
+    answer: Yes. We offer individual services as well as comprehensive publishing support.
+  - question: Will my book be published under the EION Books imprint?
+    answer: Our standard publishing services are designed for independent, author-owned publishing. You publish with your own publishing information or an eligible platform-provided ISBN, rather than under the EION Books imprint.
+
+closingHeading: Ready to plan your book?
+closingButton: Start Your Project
