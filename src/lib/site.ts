@@ -2,4 +2,4 @@
 // and robots.txt blocks crawling. Flip to true (and set `site` in astro.config.mjs to the
 // real domain) only when Paula approves going live. Also remove the X-Robots-Tag
 // header in netlify.toml at that time.
-export const SITE_IS_LIVE = false;
+export const SITE_IS_LIVE = true;

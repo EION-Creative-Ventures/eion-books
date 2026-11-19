@@ -1,13 +1,7 @@
-# Netlify build settings (used only once a development site is approved and created)
+# Netlify build settings
 [build]
   command = "npm run build"
   publish = "dist"
 
 [build.environment]
   NODE_VERSION = "22"
-
-# Keep the development site out of search engines
-[[headers]]
-  for = "/*"
-  [headers.values]
-    X-Robots-Tag = "noindex, nofollow"
