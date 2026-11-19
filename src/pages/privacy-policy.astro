@@ -1,0 +1,39 @@
+---
+import { getEntry, render } from 'astro:content';
+import Base from '../layouts/Base.astro';
+
+const page = await getEntry('privacy', 'privacy');
+if (!page) throw new Error('Privacy Policy content is missing (src/content/pages/privacy.md).');
+const p = page.data;
+const { Content } = await render(page);
+---
+<Base title={`${p.title} | EION Books`} description="How EION Books collects, uses and protects the information you send us.">
+  <section class="pp-hero">
+    <div class="wrap pp-hero__in">
+      <p class="eyebrow pp-hero__eyebrow">LEGAL</p>
+      <h1 class="display caps pp-hero__title">{p.title}</h1>
+      <p class="pp-hero__date">Effective date: {p.effectiveDate}</p>
+    </div>
+  </section>
+
+  <section class="wrap pp">
+    {p.draftNotice && <p class="pp__draft" role="note">{p.draftNotice}</p>}
+    <div class="pp__body"><Content /></div>
+  </section>
+</Base>
+
+<style>
+  .pp-hero { background: var(--aubergine); color: var(--cream); }
+  .pp-hero__in { padding-block: 88px 64px; }
+  .pp-hero__eyebrow { color: var(--marigold); }
+  .pp-hero__title { margin: 14px 0 0; font-size: clamp(44px, 7vw, 80px); line-height: 0.95; }
+  .pp-hero__date { margin: 20px 0 0; color: var(--on-dark-quiet); font-size: 16px; }
+  .pp { padding-block: 56px 96px; max-width: 760px; }
+  .pp__draft { margin: 0 0 36px; padding: 14px 18px; border-left: 4px solid var(--coral); background: rgba(240, 106, 74, 0.08); font-weight: 700; font-size: 15px; }
+  .pp__body { font-size: 17px; line-height: 1.7; }
+  .pp__body :global(h2) { font-family: var(--display); font-size: 28px; line-height: 1.15; margin: 44px 0 12px; }
+  .pp__body :global(p) { margin: 0 0 16px; }
+  .pp__body :global(ul) { margin: 0 0 16px; padding-left: 22px; }
+  .pp__body :global(li) { margin-bottom: 6px; }
+  .pp__body :global(a) { color: var(--aubergine); text-underline-offset: 3px; }
+</style>

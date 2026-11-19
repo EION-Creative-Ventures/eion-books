@@ -24,6 +24,12 @@ const id = (group: string, i: number) => `${group}-${i}`;
     <!-- Netlify Forms: detected at deploy. Submissions are stored in Netlify, never in the code repository. -->
     <form class="form" name="start-project" method="POST" action="/thank-you/" data-netlify="true" netlify-honeypot="bot-field">
       <input type="hidden" name="form-name" value="start-project" />
+      <!-- Clean, combined answers for the Netlify dashboard and email (filled in just before sending). -->
+      <input type="hidden" name="Book type" value="" />
+      <input type="hidden" name="Where they are" value="" />
+      <input type="hidden" name="Services" value="" />
+      <input type="hidden" name="Option considering" value="" />
+      <input type="hidden" name="Timeline" value="" />
       <p class="form__trap" aria-hidden="true">
         <label>Leave this field empty <input name="bot-field" tabindex="-1" autocomplete="off" /></label>
       </p>
@@ -44,14 +50,14 @@ const id = (group: string, i: number) => `${group}-${i}`;
       <fieldset>
         <legend>{c.bookTypeLabel} <span class="opt">Choose any.</span></legend>
         <div class="chips">
-          {c.bookTypes.map((t, i) => (<label class="chip" for={id('type', i)}><input type="checkbox" id={id('type', i)} name="book-type" value={t} /> {t}</label>))}
+          {c.bookTypes.map((t, i) => (<label class="chip" for={id('type', i)}><input type="checkbox" id={id('type', i)} name="book-type" data-group="Book type" value={t} /> {t}</label>))}
         </div>
       </fieldset>
 
       <fieldset>
         <legend>{c.stageLabel}</legend>
         <div class="radios">
-          {c.stages.map((t, i) => (<label for={id('stage', i)}><input type="radio" id={id('stage', i)} name="stage" value={t} /> {t}</label>))}
+          {c.stages.map((t, i) => (<label for={id('stage', i)}><input type="radio" id={id('stage', i)} name="stage" data-group="Where they are" value={t} /> {t}</label>))}
         </div>
       </fieldset>
 
@@ -60,27 +66,27 @@ const id = (group: string, i: number) => `${group}-${i}`;
         <div class="groups">
           <div>
             <p class="group__h">{c.publishingHeading}</p>
-            {c.publishingServices.map((t, i) => (<label class="check" for={id('pub', i)}><input type="checkbox" id={id('pub', i)} name="services" value={`Publishing: ${t}`} /> {t}</label>))}
+            {c.publishingServices.map((t, i) => (<label class="check" for={id('pub', i)}><input type="checkbox" id={id('pub', i)} name="services" data-group="Services" value={`Publishing: ${t}`} /> {t}</label>))}
           </div>
           <div>
             <p class="group__h group__h--studio">{c.studioHeading}</p>
-            {c.studioServices.map((t, i) => (<label class="check" for={id('studio', i)}><input type="checkbox" id={id('studio', i)} name="services" value={`Creative Studio: ${t}`} /> {t}</label>))}
+            {c.studioServices.map((t, i) => (<label class="check" for={id('studio', i)}><input type="checkbox" id={id('studio', i)} name="services" data-group="Services" value={`Creative Studio: ${t}`} /> {t}</label>))}
           </div>
         </div>
-        {c.notSureLabel && <label class="check check--solo" for="services-unsure"><input type="checkbox" id="services-unsure" name="services" value={c.notSureLabel} /> {c.notSureLabel}</label>}
+        {c.notSureLabel && <label class="check check--solo" for="services-unsure"><input type="checkbox" id="services-unsure" name="services" data-group="Services" value={c.notSureLabel} /> {c.notSureLabel}</label>}
       </fieldset>
 
       <div class="form__row">
         <fieldset>
           <legend>{c.optionLabel} <span class="opt">(optional)</span></legend>
           <div class="radios">
-            {c.options.map((t, i) => (<label for={id('option', i)}><input type="radio" id={id('option', i)} name="option" value={t} /> {t}</label>))}
+            {c.options.map((t, i) => (<label for={id('option', i)}><input type="radio" id={id('option', i)} name="option" data-group="Option considering" value={t} /> {t}</label>))}
           </div>
         </fieldset>
         <fieldset>
           <legend>{c.timelineLabel}</legend>
           <div class="radios">
-            {c.timelines.map((t, i) => (<label for={id('time', i)}><input type="radio" id={id('time', i)} name="timeline" value={t} /> {t}</label>))}
+            {c.timelines.map((t, i) => (<label for={id('time', i)}><input type="radio" id={id('time', i)} name="timeline" data-group="Timeline" value={t} /> {t}</label>))}
           </div>
         </fieldset>
       </div>
@@ -97,6 +103,27 @@ const id = (group: string, i: number) => `${group}-${i}`;
     </form>
   </section>
 </Base>
+
+<script>
+  // Netlify keeps only one value per field name and labels a group by its first option.
+  // Before sending, copy each group's choices into one clearly named hidden field and
+  // stop the individual boxes from being sent. Without JavaScript the boxes still submit.
+  const form = document.querySelector('form[name="start-project"]');
+  form?.addEventListener('submit', () => {
+    const groups = new Map();
+    form.querySelectorAll('[data-group]').forEach((el) => {
+      const box = el as HTMLInputElement;
+      const g = box.dataset.group!;
+      if (!groups.has(g)) groups.set(g, []);
+      if (box.checked) groups.get(g).push(box.value);
+      box.removeAttribute('name');
+    });
+    groups.forEach((vals, g) => {
+      const field = form.querySelector(`input[type="hidden"][name="${g}"]`) as HTMLInputElement | null;
+      if (field) field.value = vals.join(', ');
+    });
+  });
+</script>
 
 <style>
   .start { display: flex; flex-wrap: wrap; gap: 48px; align-items: flex-start; padding-block: 72px 130px; }

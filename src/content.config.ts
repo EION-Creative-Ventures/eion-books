@@ -295,4 +295,13 @@ const startProject = defineCollection({
   }),
 });
 
-export const collections = { books, work, testimonials, pages, settings, studio, authors, youngAuthors, home, publishing, ourBooks, startProject };
+const privacy = defineCollection({
+  loader: glob({ pattern: 'privacy.md', base: './src/content/pages' }),
+  schema: z.object({
+    title: z.string(),
+    effectiveDate: z.string(),
+    draftNotice: opt,
+  }),
+});
+
+export const collections = { books, work, testimonials, pages, settings, studio, authors, youngAuthors, home, publishing, ourBooks, startProject, privacy };

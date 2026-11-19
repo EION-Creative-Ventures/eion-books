@@ -291,6 +291,14 @@ collections:
     media_folder: /public/uploads/about
     public_folder: /uploads/about
     files:
+      - name: privacy
+        label: Privacy Policy page
+        file: src/content/pages/privacy.md
+        fields:
+          - { label: Page title, name: title, widget: string }
+          - { label: Effective date, name: effectiveDate, widget: string, hint: "Shown under the title, for example November 30, 2026." }
+          - { label: Draft notice, name: draftNotice, widget: string, required: false, hint: "Shown in a highlighted box at the top. Clear it when the policy is final." }
+          - { label: Policy text, name: body, widget: markdown, buttons: [bold, italic, link, heading-two, bulleted-list], editor_components: [], hint: "Leave a blank line between paragraphs." }
       - name: start-project
         label: Start a Project page
         file: src/content/pages/start-project.yaml
