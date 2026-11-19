@@ -1,7 +1,6 @@
 ---
 import { getEntry, getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
-import BrowserFrame from '../components/BrowserFrame.astro';
 import { getSettings } from '../lib/settings';
 import { getBookAuthorLinks } from '../lib/authors';
 import { publishingHref } from '../lib/links';
@@ -17,12 +16,6 @@ const shelf = (await getCollection('books', ({ data }) => data.published && data
 const heroBooks = shelf.slice(0, 3);
 const authorLinks = await getBookAuthorLinks();
 
-// Home picks from Portfolio (client projects need permission) and Testimonials.
-const work = (await getCollection('work', ({ data }) => data.published && data.homeFeatured
-  && (data.projectFor !== 'Client' || data.permission)))
-  .sort((a, b) => a.data.order - b.data.order).slice(0, 2);
-const quote = (await getCollection('testimonials', ({ data }) => data.published && data.homeFeatured))
-  .sort((a, b) => a.data.order - b.data.order)[0];
 const isPublishingLink = (href: string) => href === publishingHref;
 ---
 <Base title="EION Books | Professional Publishing for Independent Authors" description="Professional publishing support for independent authors, from first plan to launch day. Your book, your accounts, and your royalties stay yours.">
@@ -64,7 +57,6 @@ const isPublishingLink = (href: string) => href === publishingHref;
     <div class="services__grid">
       {[
         { c: h.publishingCard, cls: 'card--pub', href: publishingHref },
-        { c: h.studioCard, cls: 'card--studio', href: '/creative-studio/' },
       ].map(({ c, cls, href }) => (
         <article class:list={['card reveal', cls]}>
           <p class="card__eyebrow">{c.eyebrow}</p>
@@ -116,38 +108,6 @@ const isPublishingLink = (href: string) => href === publishingHref;
     </section>
   )}
 
-  {(work.length > 0 || quote) && (
-    <section class="wrap work">
-      <div class="books__head">
-        <div>
-          <p class="eyebrow work__eyebrow">{h.workEyebrow}</p>
-          <h2 class="display books__title">{h.workHeading}</h2>
-        </div>
-        <a class="work__all" href="/our-work/">{h.workLinkText} &rarr;</a>
-      </div>
-      <div class="work__grid">
-        {work.map((w) => (
-          <article class="wcard lift">
-            <div class="wcard__shot"><BrowserFrame src={w.data.image} alt={w.data.imageAlt} /></div>
-            <div class="wcard__body">
-              <span class="wcard__badge">{w.data.type === 'Creative Studio' ? 'CREATIVE STUDIO' : 'AUTHOR-PUBLISHED'}{w.data.category && ` · ${w.data.category.toUpperCase()}`}</span>
-              <h3>{w.data.title}</h3>
-              <p>{w.data.service} · for {w.data.client}</p>
-              {w.data.link && <a href={w.data.link}>{w.data.linkLabel} &rarr;</a>}
-            </div>
-          </article>
-        ))}
-        {quote && (
-          <figure class="wquote">
-            <span aria-hidden="true">&ldquo;</span>
-            <blockquote>{quote.data.quote}</blockquote>
-            <figcaption><strong>{quote.data.name}</strong>{quote.data.role && <span>{quote.data.role}</span>}</figcaption>
-          </figure>
-        )}
-      </div>
-    </section>
-  )}
-
   <section class="how" id="how">
     <div class="wrap">
       <p class="eyebrow how__eyebrow">{h.howEyebrow}</p>
@@ -169,15 +129,13 @@ const isPublishingLink = (href: string) => href === publishingHref;
     </div>
   </section>
 
-  <section class="sband">
-    <div class="wrap sband__row">
-      <div class="sband__copy">
-        <p class="eyebrow sband__eyebrow">{h.studioBandEyebrow}</p>
-        <h2 class="display caps sband__title">{h.studioBandTitle} {h.studioBandAccent && <span>{h.studioBandAccent}</span>} {h.studioBandTitleEnd}</h2>
-        <p class="sband__text">{h.studioBandText}</p>
-        <a class="btn btn--marigold" href="/creative-studio/">{h.studioBandButton} &rarr;</a>
+  <section class="promo" aria-labelledby="promo-title">
+    <div class="wrap promo__row">
+      <div>
+        <h2 id="promo-title" class="promo__title">{h.promoHeading}</h2>
+        <p class="promo__text">{h.promoText}</p>
       </div>
-      <div class="sband__media reveal"><BrowserFrame src={h.studioBandImage} alt={h.studioBandImageAlt} dark /></div>
+      <a class="btn btn--dark promo__btn" href={h.promoUrl}>{h.promoButton} &rarr;</a>
     </div>
   </section>
 
@@ -225,17 +183,21 @@ const isPublishingLink = (href: string) => href === publishingHref;
   .services__grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 28px; }
   .card { padding: 52px; border-radius: 12px; display: flex; flex-direction: column; gap: 20px; }
   .card--pub { background: var(--coral); color: var(--aubergine); }
-  .card--studio { background: var(--teal); color: var(--cream); }
   .card__eyebrow { margin: 0; font-weight: 700; font-size: 13px; letter-spacing: 0.16em; }
-  .card--studio .card__eyebrow { color: var(--cream); --bar: var(--marigold); }
-  .card--studio .card__link { color: var(--cream); text-decoration-color: var(--marigold); }
   .card__title { margin: 0; font-size: clamp(40px, 4vw, 52px); line-height: 0.92; }
   .card__text { margin: 0; font-weight: 500; max-width: 460px; }
   .card ul { margin: 8px 0 0; padding: 0; list-style: none; border-top: 1.5px solid currentColor; font-weight: 600; }
   .card li { padding: 13px 0; border-bottom: 1.5px solid currentColor; }
   .card--pub ul, .card--pub li { border-color: rgba(42,20,51,0.25); }
-  .card--studio ul, .card--studio li { border-color: rgba(255,246,233,0.3); }
   .card__link { margin-top: auto; padding-top: 10px; font-weight: 700; color: inherit; }
+  .card--pub { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: 64px; align-items: start; }
+  .card--pub > .card__eyebrow, .card--pub > .card__title, .card--pub > .card__text { grid-column: 1; }
+  .card--pub > ul { grid-column: 2; grid-row: 1 / span 3; margin-top: 0; }
+  .card--pub > .card__link { grid-column: 1 / -1; }
+  .promo { background: var(--paper); border-block: 1px solid var(--line); }
+  .promo__row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 40px; align-items: center; padding-block: 56px; }
+  .promo__title { margin: 0 0 8px; font-size: clamp(24px, 2.4vw, 30px); line-height: 1.15; }
+  .promo__text { margin: 0; max-width: 680px; color: var(--mauve); }
 
   .founder { background: var(--paper); border-block: 1px solid var(--line); }
   .founder__row { display: grid; grid-template-columns: minmax(0, 420px) minmax(0, 1fr); gap: 72px; align-items: center; padding-block: 110px; }
@@ -263,24 +225,6 @@ const isPublishingLink = (href: string) => href === publishingHref;
   .hbook p { margin: 0; font-size: 15px; color: var(--mauve); }
   .hbook p a { color: inherit; font-weight: 600; }
 
-  .work { padding-block: 130px 120px; }
-  .work__eyebrow { color: var(--coral-ink); --bar: var(--coral); }
-  .work__all { font-weight: 700; }
-  .work__grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 32px; }
-  .wcard { background: var(--paper); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
-  .wcard__shot { background: #E6F2F1; padding: 22px 22px 0; }
-  .wcard__shot :global(.bf) { border-radius: 8px 8px 0 0; border-bottom: 0; box-shadow: 0 18px 30px -18px rgba(42,20,51,0.45); }
-  .wcard__body { padding: 22px 26px 26px; }
-  .wcard__badge { display: inline-block; border: 1.5px solid var(--teal); color: #0F5F5D; padding: 2px 9px; border-radius: 4px; font-size: 11px; font-weight: 700; letter-spacing: 0.14em; }
-  .wcard h3 { margin: 12px 0 2px; font-size: 21px; }
-  .wcard p { margin: 0 0 12px; font-size: 15px; color: var(--mauve); }
-  .wcard a { font-weight: 700; font-size: 15px; }
-  .wquote { margin: 0; background: var(--aubergine); color: var(--cream); border-radius: 12px; padding: 40px; display: flex; flex-direction: column; justify-content: space-between; gap: 24px; }
-  .wquote > span { font-family: var(--display); font-weight: 800; font-size: 72px; line-height: 0.6; color: var(--marigold); }
-  .wquote blockquote { margin: 0; font-family: var(--display); font-weight: 700; font-size: 25px; line-height: 1.22; }
-  .wquote figcaption strong { display: block; }
-  .wquote figcaption span { font-size: 15px; color: var(--on-dark-quiet); }
-
   .how { background: var(--aubergine); color: var(--cream); padding-block: 120px; scroll-margin-top: 0; }
   .how__eyebrow { color: var(--marigold); }
   .how__title { margin: 0 0 64px; font-size: clamp(44px, 5vw, 72px); line-height: 0.95; }
@@ -298,20 +242,13 @@ const isPublishingLink = (href: string) => href === publishingHref;
   .who__chips span { border: 1.5px solid var(--aubergine); padding: 10px 20px; border-radius: 999px; font-weight: 600; }
   .who__chips a { padding: 10px 20px; border-radius: 999px; font-weight: 700; background: var(--marigold); text-decoration: none; }
 
-  .sband { background: var(--teal); color: var(--cream); }
-  .sband__row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: 64px; align-items: center; padding-block: 120px; }
-  .sband__eyebrow { color: var(--cream); --bar: var(--marigold); }
-  .sband__title { margin: 0; font-size: clamp(52px, 6.4vw, 96px); line-height: 0.88; }
-  .sband__title span { color: var(--marigold); }
-  .sband__text { margin: 28px 0 34px; max-width: 460px; font-size: 19px; color: var(--cream); }
-
   .close { background: var(--marigold); }
   .close__row { display: flex; flex-wrap: wrap; gap: 32px; align-items: center; justify-content: space-between; padding-block: 96px; }
   .close__title { margin: 0; font-size: clamp(44px, 5vw, 68px); line-height: 0.95; }
   .close__text { margin: 14px 0 0; max-width: 560px; font-weight: 500; }
 
   @media (max-width: 960px) {
-    .hero__row, .founder__row, .sband__row { grid-template-columns: 1fr; }
+    .hero__row, .founder__row { grid-template-columns: 1fr; }
     .hero__row { padding-top: 56px; gap: 8px; }
     .hero__copy { padding-bottom: 40px; }
     .hero__books { height: auto; padding-top: 32px; }
@@ -320,15 +257,16 @@ const isPublishingLink = (href: string) => href === publishingHref;
     .founder__photo { max-width: 340px; }
   }
   @media (max-width: 640px) {
-    .services, .work, .books, .how, .sband__row, .who { padding-block: 64px; }
+    .services, .books, .how, .who { padding-block: 64px; }
+    .promo__row { grid-template-columns: 1fr; gap: 20px; padding-block: 40px; }
     .card { padding: 30px 24px; }
+    .card--pub { display: flex; }
+    .card--pub > ul { margin-top: 8px; }
     .own h2 { font-size: 36px; }
     .hero__books { height: auto; padding-top: 24px; }
     .hero__pill { font-size: 11px; letter-spacing: 0.1em; padding: 6px 12px; }
     .hb--3 { width: 26%; }
     .hb--yours { height: 160px; flex-basis: 34px; font-size: 14px; }
     .how__num { font-size: 84px; }
-    .wquote { padding: 30px; }
-    .wquote blockquote { font-size: 21px; }
   }
 </style>
