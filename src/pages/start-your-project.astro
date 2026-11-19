@@ -1,0 +1,143 @@
+---
+import { getEntry } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import NextSteps from '../components/NextSteps.astro';
+import { getSettings } from '../lib/settings';
+
+const entry = await getEntry('startProject', 'start-project');
+if (!entry) throw new Error('Start a Project content is missing (src/content/pages/start-project.yaml).');
+const c = entry.data;
+const { privacyUrl } = await getSettings();
+const id = (group: string, i: number) => `${group}-${i}`;
+---
+<Base title="Start Your Project | EION Books" description={c.intro || c.heading}>
+  <section class="wrap start">
+    <aside class="start__aside">
+      <p class="eyebrow start__eyebrow">{c.eyebrow}</p>
+      <h1 class="display caps start__title">{c.heading}</h1>
+      {c.intro && <p class="start__intro">{c.intro}</p>}
+      <p class="start__next">{c.nextEyebrow}</p>
+      <NextSteps steps={c.nextSteps} />
+      {c.ownership && <p class="start__own">{c.ownership}</p>}
+    </aside>
+
+    <!-- Netlify Forms: detected at deploy. Submissions are stored in Netlify, never in the code repository. -->
+    <form class="form" name="start-project" method="POST" action="/thank-you/" data-netlify="true" netlify-honeypot="bot-field">
+      <input type="hidden" name="form-name" value="start-project" />
+      <p class="form__trap" aria-hidden="true">
+        <label>Leave this field empty <input name="bot-field" tabindex="-1" autocomplete="off" /></label>
+      </p>
+
+      <div class="form__row">
+        <label class="field">{c.nameLabel} <span class="req">(required)</span>
+          <input type="text" name="name" required autocomplete="name" />
+        </label>
+        <label class="field">{c.emailLabel} <span class="req">(required)</span>
+          <input type="email" name="email" required autocomplete="email" />
+        </label>
+      </div>
+
+      <label class="field">{c.titleLabel} <span class="opt">(optional)</span>
+        <input type="text" name="working-title" />
+      </label>
+
+      <fieldset>
+        <legend>{c.bookTypeLabel} <span class="opt">Choose any.</span></legend>
+        <div class="chips">
+          {c.bookTypes.map((t, i) => (<label class="chip" for={id('type', i)}><input type="checkbox" id={id('type', i)} name="book-type" value={t} /> {t}</label>))}
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>{c.stageLabel}</legend>
+        <div class="radios">
+          {c.stages.map((t, i) => (<label for={id('stage', i)}><input type="radio" id={id('stage', i)} name="stage" value={t} /> {t}</label>))}
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>{c.helpLabel}</legend>
+        <div class="groups">
+          <div>
+            <p class="group__h">{c.publishingHeading}</p>
+            {c.publishingServices.map((t, i) => (<label class="check" for={id('pub', i)}><input type="checkbox" id={id('pub', i)} name="services" value={`Publishing: ${t}`} /> {t}</label>))}
+          </div>
+          <div>
+            <p class="group__h group__h--studio">{c.studioHeading}</p>
+            {c.studioServices.map((t, i) => (<label class="check" for={id('studio', i)}><input type="checkbox" id={id('studio', i)} name="services" value={`Creative Studio: ${t}`} /> {t}</label>))}
+          </div>
+        </div>
+        {c.notSureLabel && <label class="check check--solo" for="services-unsure"><input type="checkbox" id="services-unsure" name="services" value={c.notSureLabel} /> {c.notSureLabel}</label>}
+      </fieldset>
+
+      <div class="form__row">
+        <fieldset>
+          <legend>{c.optionLabel} <span class="opt">(optional)</span></legend>
+          <div class="radios">
+            {c.options.map((t, i) => (<label for={id('option', i)}><input type="radio" id={id('option', i)} name="option" value={t} /> {t}</label>))}
+          </div>
+        </fieldset>
+        <fieldset>
+          <legend>{c.timelineLabel}</legend>
+          <div class="radios">
+            {c.timelines.map((t, i) => (<label for={id('time', i)}><input type="radio" id={id('time', i)} name="timeline" value={t} /> {t}</label>))}
+          </div>
+        </fieldset>
+      </div>
+
+      <label class="field">{c.messageLabel} <span class="opt">(optional)</span>
+        {c.messageHint && <span class="hint">{c.messageHint}</span>}
+        <textarea name="message" rows="5"></textarea>
+      </label>
+
+      <div class="form__foot">
+        <button type="submit" class="btn btn--dark">{c.submitButton} &rarr;</button>
+        {c.privacyNote && <p class="form__privacy">{c.privacyNote}{privacyUrl && <> <a href={privacyUrl}>Privacy Policy</a></>}</p>}
+      </div>
+    </form>
+  </section>
+</Base>
+
+<style>
+  .start { display: flex; flex-wrap: wrap; gap: 48px; align-items: flex-start; padding-block: 72px 130px; }
+  .start__aside { flex: 1 1 380px; min-width: 0; background: var(--aubergine); color: var(--cream); border-radius: 16px; padding: 52px 44px; position: sticky; top: 24px; }
+  .start__eyebrow { color: var(--marigold); }
+  .start__title { margin: 0; font-size: clamp(52px, 5.4vw, 76px); line-height: 0.86; }
+  .start__intro { margin: 24px 0 36px; color: var(--on-dark); }
+  .start__next { margin: 0 0 16px; font-weight: 700; font-size: 13px; letter-spacing: 0.16em; color: var(--marigold); }
+  .start__aside :global(.steps li > span:last-child) { color: var(--on-dark); }
+  .start__own { margin: 40px 0 0; padding-top: 24px; border-top: 1px solid rgba(255,246,233,0.2); font-size: 15px; color: var(--on-dark-quiet); }
+
+  .form { flex: 1.5 1 560px; min-width: 0; background: var(--paper); border: 1px solid var(--line); border-radius: 16px; padding: 52px; display: flex; flex-direction: column; gap: 30px; }
+  .form__trap { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+  .form__row { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px 28px; }
+  .field { display: flex; flex-direction: column; gap: 8px; font-weight: 700; font-size: 15px; }
+  .req, .opt { font-weight: 500; color: var(--mauve); font-size: 14px; }
+  .hint { font-weight: 400; color: var(--ink-soft); font-size: 14px; }
+  input[type=text], input[type=email], textarea { font: inherit; font-weight: 400; padding: 14px 16px; border: 1.5px solid rgba(42,20,51,0.3); border-radius: 8px; background: #fff; color: var(--aubergine); }
+  input[type=text]:focus, input[type=email]:focus, textarea:focus { outline: 3px solid var(--marigold); outline-offset: 1px; border-color: var(--aubergine); }
+  textarea { resize: vertical; min-height: 130px; }
+  fieldset { border: 0; margin: 0; padding: 0; min-width: 0; }
+  legend { font-weight: 700; font-size: 15px; margin-bottom: 12px; padding: 0; }
+  input[type=checkbox], input[type=radio] { accent-color: var(--aubergine); width: 18px; height: 18px; flex: none; margin: 0; }
+  .chips { display: flex; flex-wrap: wrap; gap: 10px; }
+  .chip { display: flex; align-items: center; gap: 8px; border: 1.5px solid var(--aubergine); border-radius: 999px; padding: 9px 16px; font-weight: 600; font-size: 15px; cursor: pointer; }
+  .chip:has(input:checked) { background: var(--marigold); }
+  .radios { display: flex; flex-direction: column; gap: 10px; }
+  .radios label, .check { display: flex; align-items: center; gap: 10px; font-size: 16px; cursor: pointer; }
+  .groups { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px 28px; }
+  .groups > div { display: flex; flex-direction: column; gap: 10px; }
+  .group__h { margin: 0 0 4px; font-size: 12px; font-weight: 700; letter-spacing: 0.16em; color: var(--coral); }
+  .group__h--studio { color: var(--teal); }
+  .check--solo { margin-top: 18px; padding-top: 16px; border-top: 1px dashed rgba(42,20,52,.18); }
+  .form__foot { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 24px; padding-top: 6px; }
+  .form__foot .btn { border: 0; cursor: pointer; font-family: inherit; }
+  .form__privacy { margin: 0; font-size: 14px; color: var(--mauve); }
+
+  @media (max-width: 900px) { .start__aside { position: static; } }
+  @media (max-width: 640px) {
+    .start { padding-block: 32px 72px; gap: 28px; }
+    .start__aside { padding: 34px 26px; }
+    .form { padding: 28px 22px; gap: 26px; }
+  }
+</style>

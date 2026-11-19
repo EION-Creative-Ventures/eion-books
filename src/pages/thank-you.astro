@@ -1,0 +1,31 @@
+---
+import { getEntry } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import NextSteps from '../components/NextSteps.astro';
+const entry = await getEntry('startProject', 'start-project');
+if (!entry) throw new Error('Start a Project content is missing.');
+const c = entry.data;
+---
+<Base title="Thank You | EION Books" description={c.thanksHeading}>
+  <section class="thanks">
+    <div class="wrap thanks__box">
+      <p class="eyebrow thanks__eyebrow">{c.thanksEyebrow}</p>
+      <h1 class="display caps thanks__title">{c.thanksHeading}</h1>
+      {c.thanksText && <p class="thanks__text">{c.thanksText}</p>}
+      <div class="thanks__steps"><NextSteps steps={c.nextSteps} /></div>
+      {c.ownership && <p class="thanks__own">{c.ownership}</p>}
+      <a class="btn btn--marigold" href="/">{c.thanksButton} &rarr;</a>
+    </div>
+  </section>
+</Base>
+<style>
+  .thanks { background: var(--aubergine); color: var(--cream); }
+  .thanks__box { max-width: 820px; padding-block: 110px 120px; }
+  .thanks__eyebrow { color: var(--marigold); }
+  .thanks__title { margin: 0; font-size: clamp(52px, 6vw, 88px); line-height: 0.88; }
+  .thanks__text { margin: 24px 0 32px; font-size: 19px; color: var(--on-dark); }
+  .thanks__steps { margin-bottom: 32px; }
+  .thanks__steps :global(.steps li > span:last-child) { color: var(--on-dark); }
+  .thanks__own { margin: 0 0 32px; padding-top: 22px; border-top: 1px solid rgba(255,246,233,0.2); color: var(--on-dark-quiet); font-size: 15px; }
+  @media (max-width: 640px) { .thanks__box { padding-block: 64px 72px; } }
+</style>

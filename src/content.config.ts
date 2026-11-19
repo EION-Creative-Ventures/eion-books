@@ -276,4 +276,23 @@ const ourBooks = defineCollection({
   }),
 });
 
-export const collections = { books, work, testimonials, pages, settings, studio, authors, youngAuthors, home, publishing, ourBooks };
+// The Start a Project page and its thank-you page (one file).
+const list = z.array(z.string()).default([]);
+const startProject = defineCollection({
+  loader: glob({ pattern: 'start-project.yaml', base: './src/content/pages' }),
+  schema: z.object({
+    eyebrow: z.string(), heading: z.string(), intro: opt,
+    nextEyebrow: z.string(), nextSteps: list, ownership: opt,
+    nameLabel: z.string(), emailLabel: z.string(), titleLabel: z.string(),
+    bookTypeLabel: z.string(), bookTypes: list,
+    stageLabel: z.string(), stages: list,
+    helpLabel: z.string(), publishingHeading: z.string(), publishingServices: list,
+    studioHeading: z.string(), studioServices: list, notSureLabel: opt,
+    optionLabel: z.string(), options: list,
+    timelineLabel: z.string(), timelines: list,
+    messageLabel: z.string(), messageHint: opt, privacyNote: opt, submitButton: z.string(),
+    thanksEyebrow: z.string(), thanksHeading: z.string(), thanksText: opt, thanksButton: z.string(),
+  }),
+});
+
+export const collections = { books, work, testimonials, pages, settings, studio, authors, youngAuthors, home, publishing, ourBooks, startProject };

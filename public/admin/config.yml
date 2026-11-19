@@ -291,6 +291,42 @@ collections:
     media_folder: /public/uploads/about
     public_folder: /uploads/about
     files:
+      - name: start-project
+        label: Start a Project page
+        file: src/content/pages/start-project.yaml
+        format: yml
+        fields:
+          - { label: "Small heading", name: eyebrow, widget: string }
+          - { label: "Heading", name: heading, widget: string }
+          - { label: "Intro", name: intro, widget: text, required: false }
+          - { label: 'What happens next: heading', name: nextEyebrow, widget: string }
+          - { label: 'What happens next: steps', name: nextSteps, widget: list, field: { label: Choice, name: choice, widget: string }, hint: "Also shown on the thank-you page." }
+          - { label: "Ownership statement", name: ownership, widget: string, required: false }
+          - { label: "Question: name", name: nameLabel, widget: string }
+          - { label: "Question: email", name: emailLabel, widget: string }
+          - { label: "Question: working title", name: titleLabel, widget: string }
+          - { label: "Question: kind of book", name: bookTypeLabel, widget: string }
+          - { label: "Kind of book: choices", name: bookTypes, widget: list, field: { label: Choice, name: choice, widget: string } }
+          - { label: "Question: where are you", name: stageLabel, widget: string }
+          - { label: "Where are you: choices", name: stages, widget: list, field: { label: Choice, name: choice, widget: string } }
+          - { label: "Question: help with", name: helpLabel, widget: string }
+          - { label: "Publishing services group heading", name: publishingHeading, widget: string }
+          - { label: "Publishing services: choices", name: publishingServices, widget: list, field: { label: Choice, name: choice, widget: string } }
+          - { label: "Creative Studio group heading", name: studioHeading, widget: string }
+          - { label: "Creative Studio: choices", name: studioServices, widget: list, field: { label: Choice, name: choice, widget: string } }
+          - { label: 'Not sure yet choice', name: notSureLabel, widget: string, required: false }
+          - { label: "Question: option considering", name: optionLabel, widget: string }
+          - { label: "Options: choices", name: options, widget: list, field: { label: Choice, name: choice, widget: string } }
+          - { label: "Question: timeline", name: timelineLabel, widget: string }
+          - { label: "Timeline: choices", name: timelines, widget: list, field: { label: Choice, name: choice, widget: string } }
+          - { label: "Question: message", name: messageLabel, widget: string }
+          - { label: "Message hint", name: messageHint, widget: string, required: false }
+          - { label: "Privacy note under the form", name: privacyNote, widget: string, required: false, hint: "The Privacy Policy link appears here once a privacy link is set in Site settings." }
+          - { label: "Send button", name: submitButton, widget: string }
+          - { label: "Thank-you page: small heading", name: thanksEyebrow, widget: string }
+          - { label: "Thank-you page: heading", name: thanksHeading, widget: string }
+          - { label: "Thank-you page: text", name: thanksText, widget: text, required: false }
+          - { label: "Thank-you page: button", name: thanksButton, widget: string }
       - name: our-books
         label: Our Books page
         file: src/content/pages/our-books.yaml
@@ -559,7 +595,7 @@ collections:
             name: startProjectUrl
             widget: string
             required: false
-            hint: Where every Start Your Project button goes (your intake form). Leave blank to use the contact email.
+            hint: Leave blank to send every Start Your Project button to the site's Start a Project form. Only fill this in to use a different form.
             pattern: ['^(https?://.*)?$', 'Must start with https://']
           - { label: Footer tagline, name: footerTagline, widget: string, required: false }
           - { label: Footer description, name: footerBlurb, widget: text, required: false }

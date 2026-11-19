@@ -1,0 +1,17 @@
+---
+// "What happens next" steps (Start a Project and thank-you pages).
+interface Props { steps: string[] }
+const { steps } = Astro.props;
+const colors = ['var(--marigold)', 'var(--coral)', 'var(--teal)'];
+---
+<ol class="steps">
+  {steps.map((s, i) => (
+    <li><span class="steps__n" style={`background:${colors[i % 3]};color:${i % 3 === 2 ? 'var(--cream)' : 'var(--aubergine)'}`}>{i + 1}</span><span>{s}</span></li>
+  ))}
+</ol>
+<style>
+  .steps { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 20px; }
+  .steps li { display: flex; gap: 16px; align-items: flex-start; }
+  .steps__n { flex: 0 0 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; }
+  .steps li > span:last-child { padding-top: 5px; }
+</style>

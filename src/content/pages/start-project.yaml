@@ -1,0 +1,53 @@
+eyebrow: START YOUR PROJECT
+heading: Tell us about your project.
+intro: A few questions help us understand where you are and what you need. It takes about five minutes.
+nextEyebrow: WHAT HAPPENS NEXT
+nextSteps:
+  - We review your project details and respond by email.
+  - If needed, we schedule a consultation to discuss your goals.
+  - You receive a customized recommendation and quote. No obligation.
+ownership: "Your book stays yours: your rights, your accounts, your royalties."
+
+nameLabel: Your name
+emailLabel: Email
+titleLabel: Working title of your book
+bookTypeLabel: What kind of book is it?
+bookTypes: [Children's book, Journal, Devotional, Memoir, Nonfiction, Something else]
+stageLabel: Where are you right now?
+stages:
+  - I have an idea
+  - I'm writing
+  - My manuscript is finished
+  - My files are ready to publish
+  - My book is out; I need design help
+helpLabel: What could you use help with? Choose any.
+publishingHeading: PUBLISHING SERVICES
+publishingServices:
+  - Consultation and planning
+  - Editing or illustration coordination
+  - Interior formatting and layout
+  - Cover preparation and print-ready files
+  - ISBN and distribution guidance
+  - KDP or IngramSpark setup assistance
+studioHeading: CREATIVE STUDIO
+studioServices:
+  - Canva author website
+  - Custom author website
+  - Book landing page
+  - Launch graphics and mockups
+  - Press kit or author branding
+  - Something more specialized
+notSureLabel: Not sure yet
+optionLabel: Which option are you considering?
+options: [Single service, The EION Signature Publishing Experience, Publishing consultation, Not sure yet]
+timelineLabel: Ideal timeline
+timelines: [As soon as possible, Flexible, Within 3 months, 3 to 6 months, More than 6 months]
+messageLabel: Tell us about your project
+messageHint: Share anything that helps us understand your book, your goals, or your questions.
+privacyNote: We'll only use your details to respond to your inquiry.
+submitButton: Send my project
+
+thanksEyebrow: THANK YOU
+thanksHeading: We've received your project.
+thanksText: Thank you for telling us about your project. Here's what happens next.
+thanksButton: Back to the home page
