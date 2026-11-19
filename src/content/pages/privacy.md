@@ -1,7 +1,7 @@
 ---
 title: Privacy Policy
-effectiveDate: "[EFFECTIVE DATE]"
-draftNotice: "Draft for review. This policy is not final and is not on the live website yet."
+effectiveDate: November 18, 2026
+draftNotice: ""
 ---
 EION Books is a brand of EION Creative Ventures, LLC, based in Norfolk, Virginia. This policy explains what information we collect through this website, how we use it, who can access it, and the choices you have.
 
@@ -58,7 +58,7 @@ Our website may recognize young authors whose work we've published, for example 
 
 ## Your choices
 
-You can ask us to see, correct or delete the information you've sent us. Email us at [CONTACT EMAIL] and we'll respond within a reasonable time.
+You can ask us to see, correct or delete the information you've sent us. Email us at [eionbookspublishing@paulaybanks.com](mailto:eionbookspublishing@paulaybanks.com) and we'll respond within a reasonable time.
 
 ## Changes to this policy
 
@@ -68,4 +68,4 @@ If we change how we handle your information, we'll update this page and the effe
 
 EION Books, a brand of EION Creative Ventures, LLC<br>
 Norfolk, Virginia<br>
-[CONTACT EMAIL]
+[eionbookspublishing@paulaybanks.com](mailto:eionbookspublishing@paulaybanks.com)
