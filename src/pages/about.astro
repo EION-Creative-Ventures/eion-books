@@ -12,7 +12,7 @@ const books = (await getCollection('books', ({ data }) => data.published && data
   .sort((x, y) => x.data.order - y.data.order);
 const { startHref } = await getSettings();
 ---
-<Base title="About | EION Books" description={a.heroIntro}>
+<Base title="About | EION Books" description="EION Books began with children's literature. Today it publishes its own titles and helps independent authors bring theirs to print with hands-on support.">
   <section class="hero">
     <div class="wrap hero__row">
       <div class="hero__copy">
@@ -38,7 +38,7 @@ const { startHref } = await getSettings();
         <div class="beliefs__grid">
           {a.beliefs.map((b, i) => (
             <div class="belief reveal">
-              <span class="belief__num display">{String(i + 1).padStart(2, '0')}</span>
+              <span class="belief__num display" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
               <h3>{b.title}</h3>
               <p>{b.text}</p>
             </div>
@@ -90,7 +90,7 @@ const { startHref } = await getSettings();
 
   .story { display: flex; flex-wrap: wrap; gap: 56px; padding-block: 110px; }
   .story__head { flex: 1 1 360px; }
-  .story__eyebrow { color: var(--coral); }
+  .story__eyebrow { color: var(--coral-ink); --bar: var(--coral); }
   .story__title { margin: 0; font-size: 60px; }
   .story__body { flex: 1 1 520px; font-size: 19px; color: var(--ink-soft); }
   .story__body :global(p) { margin: 0 0 20px; }

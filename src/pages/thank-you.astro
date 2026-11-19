@@ -6,7 +6,7 @@ const entry = await getEntry('startProject', 'start-project');
 if (!entry) throw new Error('Start a Project content is missing.');
 const c = entry.data;
 ---
-<Base title="Thank You | EION Books" description={c.thanksHeading}>
+<Base title="Thank You | EION Books" description={c.thanksHeading} noindex>
   <section class="thanks">
     <div class="wrap thanks__box">
       <p class="eyebrow thanks__eyebrow">{c.thanksEyebrow}</p>

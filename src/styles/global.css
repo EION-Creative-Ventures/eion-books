@@ -8,7 +8,8 @@
   --cover-bg: #EBDCC6;
   --marigold: #FFB627;
   --coral: #FF6B4A;
-  --teal: #127C7A;
+  --coral-ink: #B24A33; /* coral for small text on light backgrounds (meets contrast) */
+  --teal: #117775;
   --mauve: #6E5A73;
   --ink-soft: #4B3A52;
   --on-dark: #E4D6E6;
@@ -34,7 +35,7 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--marigold); outl
 .caps { text-transform: uppercase; }
 
 .eyebrow { display: flex; align-items: center; gap: 12px; margin: 0 0 22px; font-weight: 700; font-size: 13px; letter-spacing: 0.18em; }
-.eyebrow::before { content: ""; display: block; width: 6px; height: 26px; background: currentColor; }
+.eyebrow::before { content: ""; display: block; width: 6px; height: 26px; background: var(--bar, currentColor); }
 
 .badge { display: inline-block; padding: 4px 10px; border-radius: 4px; font-size: 11px; font-weight: 700; letter-spacing: 0.14em; }
 .badge--imprint { background: var(--aubergine); color: var(--cream); }
@@ -63,3 +64,8 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--marigold); outl
 
 .badge--studio { background: var(--teal); color: var(--cream); }
 .badge--client { background: var(--marigold); color: var(--aubergine); }
+
+/* Keyboard users: the skip link appears when focused */
+.skip { position: absolute; left: 16px; top: -100px; z-index: 100; background: var(--aubergine); color: var(--cream); padding: 12px 18px; border-radius: 6px; font-weight: 700; text-decoration: none; }
+.skip:focus { top: 12px; }
+input:focus-visible, textarea:focus-visible, select:focus-visible { outline: 3px solid var(--marigold); outline-offset: 2px; }

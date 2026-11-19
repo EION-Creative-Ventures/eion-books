@@ -142,7 +142,7 @@ const authorLinks = await getBookAuthorLinks();
 
   .model { display: flex; flex-wrap: wrap; gap: 64px; padding-block: 130px 110px; }
   .model__copy { flex: 1 1 380px; min-width: 0; }
-  .model__eyebrow { color: var(--coral); }
+  .model__eyebrow { color: var(--coral-ink); --bar: var(--coral); }
   .model__title { margin: 0; font-size: clamp(40px, 4.4vw, 64px); line-height: 0.95; }
   .model__text { margin: 24px 0 0; color: var(--ink-soft); }
   .model__wrap { flex: 1.3 1 520px; min-width: 0; }
@@ -171,7 +171,7 @@ const authorLinks = await getBookAuthorLinks();
   .phases__note { margin: 32px 0 0; padding: 18px 24px; border-radius: 10px; background: var(--aubergine); color: var(--cream); font-weight: 600; }
 
   .ways { padding-block: 130px 110px; }
-  .ways__eyebrow { color: var(--coral); }
+  .ways__eyebrow { color: var(--coral-ink); --bar: var(--coral); }
   .ways__title { margin: 0 0 48px; font-size: clamp(40px, 4.6vw, 68px); line-height: 0.95; }
   .ways__grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; align-items: stretch; }
   .way { position: relative; display: flex; flex-direction: column; gap: 14px; padding: 36px 32px; border: 1.5px solid var(--aubergine); border-radius: 12px; background: var(--paper); }
@@ -185,7 +185,7 @@ const authorLinks = await getBookAuthorLinks();
 
   .books { background: var(--paper); padding-block: 100px; border-block: 1px solid var(--line); }
   .books__row { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.4fr); gap: 56px; align-items: center; }
-  .books__eyebrow { color: var(--coral); }
+  .books__eyebrow { color: var(--coral-ink); --bar: var(--coral); }
   .books__title { margin: 0; font-size: clamp(38px, 4.2vw, 58px); line-height: 0.95; }
   .books__text { margin: 18px 0 28px; color: var(--ink-soft); }
   .books__list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }

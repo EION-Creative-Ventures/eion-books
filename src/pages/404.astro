@@ -1,0 +1,50 @@
+---
+import Base from '../layouts/Base.astro';
+import { getSettings } from '../lib/settings';
+import { publishingHref } from '../lib/links';
+const { startHref } = await getSettings();
+const links = [
+  { label: 'Publishing Services', href: publishingHref },
+  { label: 'Creative Studio', href: '/creative-studio/' },
+  { label: 'Our Books', href: '/our-books/' },
+  { label: 'Start Your Project', href: startHref },
+];
+---
+<Base title="Page Not Found | EION Books" description="This page isn't on our shelf." noindex>
+  <section class="nf">
+    <div class="wrap nf__row">
+      <div class="nf__copy">
+        <p class="eyebrow nf__eyebrow">PAGE NOT FOUND</p>
+        <h1 class="display caps nf__title">This page isn't on <span>our shelf.</span></h1>
+        <p class="nf__text">The page you're looking for may have moved or no longer exists. Try one of these instead:</p>
+        <ul class="nf__links">
+          {links.map((l) => <li><a href={l.href}>{l.label} &rarr;</a></li>)}
+        </ul>
+        <a class="btn btn--marigold" href="/">Back to the home page &rarr;</a>
+      </div>
+      <div class="nf__shelf" aria-hidden="true">
+        <i style="--h:78%;--c:var(--coral)"></i><i style="--h:94%;--c:var(--teal)"></i><i class="nf__gap"></i><i style="--h:70%;--c:var(--marigold)"></i><i style="--h:86%;--c:var(--cream)"></i>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .nf { background: var(--aubergine); color: var(--cream); }
+  .nf__row { display: flex; gap: 64px; align-items: flex-end; justify-content: space-between; padding-block: 104px 96px; }
+  .nf__copy { max-width: 640px; }
+  .nf__eyebrow { color: var(--marigold); }
+  .nf__title { margin: 14px 0 0; font-size: clamp(48px, 7vw, 88px); line-height: 0.92; }
+  .nf__title span { color: var(--marigold); }
+  .nf__text { margin: 26px 0 0; font-size: 19px; line-height: 1.6; color: var(--on-dark); }
+  .nf__links { list-style: none; margin: 22px 0 36px; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, max-content)); gap: 12px 40px; }
+  .nf__links a { color: var(--cream); font-weight: 700; text-decoration-color: var(--marigold); text-underline-offset: 5px; }
+  .nf__shelf { flex: 0 0 280px; height: 300px; display: flex; gap: 12px; align-items: flex-end; border-bottom: 6px solid var(--marigold); }
+  .nf__shelf i { flex: 1; height: var(--h); background: var(--c); border-radius: 4px 4px 0 0; }
+  .nf__shelf .nf__gap { flex: 1; height: 100%; background: none; border: 2px dashed rgba(255, 246, 233, 0.35); border-bottom: 0; }
+  @media (max-width: 820px) {
+    .nf__row { padding-block: 72px 64px; }
+    .nf__shelf { display: none; }
+    .nf__links { grid-template-columns: 1fr; }
+  }
+</style>

@@ -31,7 +31,7 @@ const initials = (n: string) => n.replace(/^Dr\.?\s+/i, '').split(/\s+/).map((w)
 
 <style>
   .tm { background: var(--teal); color: var(--cream); padding-block: 110px; }
-  .tm__eyebrow { color: var(--marigold); }
+  .tm__eyebrow { color: var(--cream); --bar: var(--marigold); }
   .tm__grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 28px; }
   .tm__card { margin: 0; background: var(--cream); color: var(--aubergine); border-top: 6px solid var(--marigold); border-radius: 14px; padding: 34px 32px 30px; display: flex; flex-direction: column; box-shadow: 0 24px 44px -28px rgba(31,14,39,0.55); }
   .tm__mark { font-family: var(--display); font-weight: 800; font-size: 72px; line-height: 0.6; color: var(--teal); height: 34px; }

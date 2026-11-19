@@ -7,13 +7,27 @@ import '@fontsource/figtree/700.css';
 import '../styles/global.css';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
+import { SITE_IS_LIVE } from '../lib/site';
 
 interface Props {
   title: string;
   description: string;
   noindex?: boolean;
+  image?: string;
 }
-const { title, description, noindex = true } = Astro.props;
+const { title, description, noindex = false, image = '/og-default.jpg' } = Astro.props;
+const blockIndex = noindex || !SITE_IS_LIVE;
+// Search results show about 155 characters; trim long descriptions at a word boundary.
+function trimDescription(text: string) {
+  if (text.length <= 158) return text;
+  const cut = text.slice(0, 156);
+  const sentenceEnd = cut.lastIndexOf('. ');
+  if (sentenceEnd > 80) return cut.slice(0, sentenceEnd + 1);
+  return cut.replace(/\s+\S*$/, '') + '…';
+}
+const metaDescription = trimDescription(description);
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const ogImage = new URL(image, Astro.site).href;
 ---
 <!doctype html>
 <html lang="en">
@@ -21,11 +35,26 @@ const { title, description, noindex = true } = Astro.props;
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
-    <meta name="description" content={description} />
-    {noindex && <meta name="robots" content="noindex, nofollow" />}
+    <meta name="description" content={metaDescription} />
+    {blockIndex && <meta name="robots" content="noindex, nofollow" />}
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="theme-color" content="#2A1433" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="EION Books" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={metaDescription} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="EION Books: Your Book. Our Expertise." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="sitemap" href="/sitemap.xml" />
   </head>
   <body>
-    <a class="sr-only" href="#main">Skip to content</a>
+    <a class="skip" href="#main">Skip to content</a>
     <Nav />
     <main id="main">
       <slot />

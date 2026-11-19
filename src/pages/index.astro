@@ -25,7 +25,7 @@ const quote = (await getCollection('testimonials', ({ data }) => data.published 
   .sort((a, b) => a.data.order - b.data.order)[0];
 const isPublishingLink = (href: string) => href === publishingHref;
 ---
-<Base title="EION Books | Professional Publishing for Independent Authors" description={h.heroIntro}>
+<Base title="EION Books | Professional Publishing for Independent Authors" description="Professional publishing support for independent authors, from first plan to launch day. Your book, your accounts, and your royalties stay yours.">
   <section class="hero">
     <div class="wrap hero__row">
       <div class="hero__copy">
@@ -220,14 +220,15 @@ const isPublishingLink = (href: string) => href === publishingHref;
   .own p { margin: 0; font-weight: 500; }
 
   .services { padding-block: 130px 110px; }
-  .services__eyebrow { color: var(--coral); }
+  .services__eyebrow { color: var(--coral-ink); --bar: var(--coral); }
   .services__title { margin: 0 0 56px; max-width: 900px; font-size: clamp(44px, 5vw, 72px); line-height: 0.95; }
   .services__grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 28px; }
   .card { padding: 52px; border-radius: 12px; display: flex; flex-direction: column; gap: 20px; }
   .card--pub { background: var(--coral); color: var(--aubergine); }
   .card--studio { background: var(--teal); color: var(--cream); }
   .card__eyebrow { margin: 0; font-weight: 700; font-size: 13px; letter-spacing: 0.16em; }
-  .card--studio .card__eyebrow, .card--studio .card__link { color: var(--marigold); }
+  .card--studio .card__eyebrow { color: var(--cream); --bar: var(--marigold); }
+  .card--studio .card__link { color: var(--cream); text-decoration-color: var(--marigold); }
   .card__title { margin: 0; font-size: clamp(40px, 4vw, 52px); line-height: 0.92; }
   .card__text { margin: 0; font-weight: 500; max-width: 460px; }
   .card ul { margin: 8px 0 0; padding: 0; list-style: none; border-top: 1.5px solid currentColor; font-weight: 600; }
@@ -263,7 +264,7 @@ const isPublishingLink = (href: string) => href === publishingHref;
   .hbook p a { color: inherit; font-weight: 600; }
 
   .work { padding-block: 130px 120px; }
-  .work__eyebrow { color: var(--coral); }
+  .work__eyebrow { color: var(--coral-ink); --bar: var(--coral); }
   .work__all { font-weight: 700; }
   .work__grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 32px; }
   .wcard { background: var(--paper); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
@@ -299,7 +300,7 @@ const isPublishingLink = (href: string) => href === publishingHref;
 
   .sband { background: var(--teal); color: var(--cream); }
   .sband__row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: 64px; align-items: center; padding-block: 120px; }
-  .sband__eyebrow { color: var(--marigold); }
+  .sband__eyebrow { color: var(--cream); --bar: var(--marigold); }
   .sband__title { margin: 0; font-size: clamp(52px, 6.4vw, 96px); line-height: 0.88; }
   .sband__title span { color: var(--marigold); }
   .sband__text { margin: 28px 0 34px; max-width: 460px; font-size: 19px; color: var(--cream); }

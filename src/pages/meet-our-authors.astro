@@ -125,7 +125,7 @@ const links = (a: (typeof authors)[number]['data']) => [
   .hero__jump a { color: var(--marigold); }
 
   .published { padding-block: 100px 60px; }
-  .published__eyebrow { color: var(--coral); }
+  .published__eyebrow { color: var(--coral-ink); --bar: var(--coral); }
   .author { display: grid; grid-template-columns: minmax(0, 380px) minmax(0, 1fr); gap: 64px; align-items: center; padding-block: 56px; border-top: 1px solid var(--line); }
   .author--flip { grid-template-columns: minmax(0, 1fr) minmax(0, 380px); }
   .author--flip .author__photo { order: 2; }
@@ -160,7 +160,7 @@ const links = (a: (typeof authors)[number]['data']) => [
   .spine::before, .spine::after { content: ""; position: absolute; left: 0; right: 0; height: 3px; background: var(--marigold); opacity: 0.9; }
   .spine::before { top: 22px; } .spine::after { bottom: 22px; }
   .spine span { writing-mode: vertical-rl; transform: rotate(180deg); font-family: var(--display); font-weight: 800; font-stretch: 75%; font-size: 26px; letter-spacing: 0.02em; color: var(--cream); white-space: nowrap; }
-  .spine[style*='--paper'] span { color: var(--aubergine); }
+  .spine[style*='--paper'] span, .spine[style*='--coral'] span { color: var(--aubergine); }
 
   .band { background: var(--aubergine-deep); color: var(--cream); }
   .band__row { display: flex; flex-wrap: wrap; gap: 32px; align-items: center; justify-content: space-between; padding-block: 90px; }
