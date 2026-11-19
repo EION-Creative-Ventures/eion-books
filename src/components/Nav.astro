@@ -5,10 +5,8 @@ import { publishingHref } from '../lib/links';
 const { startHref } = await getSettings();
 const links = [
   { label: 'Publishing Services', href: publishingHref },
-  { label: 'Creative Studio', href: '/creative-studio/' },
   { label: 'Our Books', href: '/our-books/' },
   { label: 'Authors', href: '/meet-our-authors/' },
-  { label: 'Our Work', href: '/our-work/' },
   { label: 'About', href: '/about/' },
 ];
 const current = Astro.url.pathname;

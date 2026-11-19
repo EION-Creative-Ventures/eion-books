@@ -1,13 +1,13 @@
 ---
 title: Privacy Policy
-effectiveDate: November 18, 2026
+effectiveDate: November 19, 2026
 draftNotice: ""
 ---
 EION Books is a brand of EION Creative Ventures, LLC, based in Norfolk, Virginia. This policy explains what information we collect through this website, how we use it, who can access it, and the choices you have.
 
 ## What we collect
 
-We collect the information you choose to send us through our Start Your Project form. The form is used for both publishing services inquiries and EION Creative Studio inquiries, such as author websites, book landing pages, launch graphics and author branding. It asks for:
+We collect the information you choose to send us through our Start Your Project form. The form is used for publishing services inquiries. It asks for:
 
 - Your name and email address (required)
 - Your book's working title, if you share it

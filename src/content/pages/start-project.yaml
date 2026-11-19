@@ -19,7 +19,6 @@ stages:
   - I'm writing
   - My manuscript is finished
   - My files are ready to publish
-  - My book is out; I need design help
 helpLabel: What could you use help with? Choose any.
 publishingHeading: PUBLISHING SERVICES
 publishingServices:
@@ -29,14 +28,6 @@ publishingServices:
   - Cover preparation and print-ready files
   - ISBN and distribution guidance
   - KDP or IngramSpark setup assistance
-studioHeading: CREATIVE STUDIO
-studioServices:
-  - Canva author website
-  - Custom author website
-  - Book landing page
-  - Launch graphics and mockups
-  - Press kit or author branding
-  - Something more specialized
 notSureLabel: Not sure yet
 optionLabel: Which option are you considering?
 options: [Single service, The EION Signature Publishing Experience, Publishing consultation, Not sure yet]

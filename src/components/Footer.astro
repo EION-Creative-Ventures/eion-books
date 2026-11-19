@@ -20,8 +20,8 @@ const social = [
       {s.footerBlurb && <p class="footer__blurb">{s.footerBlurb}</p>}
     </div>
     <nav aria-label="Footer" class="footer__nav">
-      <div><span>SERVICES</span><a href={publishingHref}>Publishing Services</a><a href="/creative-studio/">Creative Studio</a><a href={s.startHref}>Start Your Project</a></div>
-      <div><span>BOOKS</span><a href="/our-books/">Our Books</a><a href="/meet-our-authors/">Meet Our Authors</a><a href="/our-work/">Our Work</a><a href="/about/">About</a></div>
+      <div><span>SERVICES</span><a href={publishingHref}>Publishing Services</a><a href="https://eioncreative.com">EION Creative Studio</a><a href={s.startHref}>Start Your Project</a></div>
+      <div><span>BOOKS</span><a href="/our-books/">Our Books</a><a href="/meet-our-authors/">Meet Our Authors</a><a href="/about/">About</a></div>
       {(s.contactEmail || social.length > 0 || s.privacyUrl) && <div><span>CONNECT</span>{s.contactEmail && <a href={`mailto:${s.contactEmail}`}>{s.contactEmail}</a>}{social.map((l) => <a href={l.href}>{l.label}</a>)}{s.privacyUrl && <a href={s.privacyUrl}>Privacy Policy</a>}</div>}
     </nav>
   </div>

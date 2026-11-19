@@ -14,8 +14,8 @@ ownership:
   - title: Your royalties.
     text: Platforms pay you directly. EION Books charges for the services we provide, not a percentage of your royalties.
 
-servicesEyebrow: TWO WAYS TO WORK WITH US
-servicesHeading: Publishing support and creative design, under one roof.
+servicesEyebrow: PUBLISHING SERVICES
+servicesHeading: Professional publishing support, from first plan to launch day.
 publishingCard:
   eyebrow: EION BOOKS · PUBLISHING SERVICES
   title: Publishing, handled with you.
@@ -25,15 +25,6 @@ publishingCard:
     - Editing, illustration, and layout coordination
     - KDP and IngramSpark setup assistance, in your accounts
   linkText: Explore Publishing Services
-studioCard:
-  eyebrow: EION CREATIVE STUDIO
-  title: Design for authors. Only authors.
-  text: Websites, launch graphics, and branding built around your book, so readers find you and remember you.
-  items:
-    - Author websites and book landing pages
-    - Launch graphics and promotional materials
-    - Press kits, mockups, and author branding
-  linkText: Explore the Studio
 
 founderEyebrow: MEET THE FOUNDER
 founderQuote: I've been on both sides of the publishing process. I know what it takes to bring my own books into the world, and I bring that same care and attention to the authors who trust EION Books with theirs.
@@ -47,10 +38,6 @@ booksEyebrow: BOOKS WE'VE HELPED BRING TO LIFE
 booksHeading: We publish too, on the same platforms you'll use.
 booksLinkText: Browse Our Books
 authorsLinkText: Meet Our Authors
-
-workEyebrow: AUTHORS WE'VE WORKED WITH
-workHeading: Work we've done for independent authors.
-workLinkText: See all our work
 
 howEyebrow: HOW IT WORKS
 howHeading: From first conversation to launch day.
@@ -69,14 +56,10 @@ whoText: We work with independent authors creating children's books, journals, d
 whoItems: [Children's books, Journals, Devotionals, Memoirs, Nonfiction]
 whoButton: Tell us about yours
 
-studioBandEyebrow: EION CREATIVE STUDIO
-studioBandTitle: Your book needs a
-studioBandAccent: home
-studioBandTitleEnd: online.
-studioBandText: From a single landing page to a full author website and launch kit, the Studio designs everything around your story, for authors only.
-studioBandButton: Explore the Studio
-studioBandImage: /uploads/portfolio/shop-desktop.webp
-studioBandImageAlt: The EION Books children's bookstore home page, designed and built by EION Creative Studio
+promoHeading: Looking for Creative Design Services?
+promoText: From branded workbooks and digital media kits to promotional graphics and custom digital materials, explore what EION Creative Studio can create for you.
+promoButton: Explore EION Creative Studio
+promoUrl: https://eioncreative.com
 
 closingHeading: Tell us about your book.
 closingText: Share where you are and what you need. We'll reply with next steps and a time to talk. No obligation.

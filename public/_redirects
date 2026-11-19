@@ -10,3 +10,9 @@
 /litkids-create               https://litkidscreate.com   301
 /educators-%26-partnerships   https://litkidscreate.com   301
 /story-hustle                 https://storyhustlevault.com 301
+
+# Creative Studio now has its own website (Nov 2026).
+/creative-studio              https://eioncreative.com    301
+/creative-studio/*            https://eioncreative.com    301
+/our-work                     https://eioncreative.com    301
+/our-work/*                   https://eioncreative.com    301

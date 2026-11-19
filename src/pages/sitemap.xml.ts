@@ -1,7 +1,7 @@
 import type { APIRoute } from 'astro';
 
 // Public pages for search engines. The thank-you and 404 pages are left out on purpose.
-const paths = ['/', '/publishing-services/', '/creative-studio/', '/our-books/', '/meet-our-authors/', '/our-work/', '/about/', '/start-your-project/', '/privacy-policy/'];
+const paths = ['/', '/publishing-services/', '/our-books/', '/meet-our-authors/', '/about/', '/start-your-project/', '/privacy-policy/'];
 
 export const GET: APIRoute = ({ site }) => {
   const urls = paths.map((p) => `  <url><loc>${new URL(p, site).href}</loc></url>`).join('\n');
