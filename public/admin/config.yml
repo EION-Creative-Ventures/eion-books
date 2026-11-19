@@ -17,8 +17,8 @@ local_backend: true
 # Drafts -> In review -> Ready -> Publish
 publish_mode: editorial_workflow
 
-site_url: https://eion-books-dev.netlify.app
-display_url: https://eion-books-dev.netlify.app
+site_url: https://www.eionbooks.com
+display_url: https://www.eionbooks.com
 logo_url: /admin/eion-logo.svg
 
 # Default image folder (each section below can use its own).

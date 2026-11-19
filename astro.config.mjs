@@ -2,7 +2,7 @@
 import { defineConfig } from 'astro/config';
 
 export default defineConfig({
-  // Development site only. The real eionbooks.com is not connected to this project.
-  site: 'https://eion-books-dev.netlify.app',
+  // Live address. www is the primary domain; eionbooks.com redirects to it in Netlify.
+  site: 'https://www.eionbooks.com',
   trailingSlash: 'ignore',
 });

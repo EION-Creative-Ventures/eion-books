@@ -1,0 +1,12 @@
+# Old eionbooks.com (GoDaddy Website Builder) addresses -> new pages.
+# Netlify matches with or without a trailing slash. Paths are case-sensitive and
+# special characters must be URL-encoded (the & in the old Educators page is %26).
+# eionbooks.com -> www.eionbooks.com is handled by Netlify's primary-domain setting.
+
+/about-eion-books             /about/                     301
+/books-by-eion-books          /our-books/                 301
+/publish-with-eion-books      /publishing-services/       301
+/contact                      /start-your-project/        301
+/litkids-create               https://litkidscreate.com   301
+/educators-%26-partnerships   https://litkidscreate.com   301
+/story-hustle                 https://storyhustlevault.com 301
